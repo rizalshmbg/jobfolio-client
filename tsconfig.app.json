@@ -26,6 +26,7 @@
     "paths": {
       "@lib/*": ["./src/lib/*"],
       "@pages/*": ["./src/pages/*"],
+      "@stores/*": ["./src/stores/*"],
     }
   },
   "include": ["src"]

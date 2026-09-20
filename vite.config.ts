@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       '@lib': path.resolve(import.meta.dirname, './src/lib'),
       '@pages': path.resolve(import.meta.dirname, './src/pages'),
+      '@stores': path.resolve(import.meta.dirname, './src/stores'),
     },
   }
 });
