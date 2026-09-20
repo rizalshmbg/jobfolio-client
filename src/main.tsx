@@ -6,6 +6,9 @@ import { BrowserRouter } from 'react-router';
 import './index.css';
 import App from './App';
 import { queryClient } from '@lib/query-client';
+import { setupAxiosInterceptors } from '@lib/axios-interceptors';
+
+setupAxiosInterceptors();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
