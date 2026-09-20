@@ -12,6 +12,7 @@ export default defineConfig({
       '@pages': path.resolve(import.meta.dirname, './src/pages'),
       '@stores': path.resolve(import.meta.dirname, './src/stores'),
       '@/types': path.resolve(import.meta.dirname, './src/types'),
+      '@validations': path.resolve(import.meta.dirname, './src/validations'),
     },
   }
 });
