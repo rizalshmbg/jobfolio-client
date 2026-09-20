@@ -1,11 +1,11 @@
 import { api } from '@lib/axios';
 
+import type { LoginInput, RegisterInput } from '@validations/auth.validations';
+
 import type {
-  LoginInput,
   LoginResponse,
   LogoutResponse,
   RefreshResponse,
-  RegisterInput,
   RegisterResponse,
 } from '@/types/auth';
 
