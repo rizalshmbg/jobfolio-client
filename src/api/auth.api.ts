@@ -1,4 +1,4 @@
-import { api } from '@lib/axios';
+import { api, refreshApi } from '@lib/axios';
 
 import type { LoginInput, RegisterInput } from '@validations/auth.validations';
 
@@ -24,7 +24,7 @@ export const login = async (data: LoginInput): Promise<LoginResponse> => {
 };
 
 export const refreshAccessToken = async (): Promise<RefreshResponse> => {
-  const response = await api.post<RefreshResponse>('/auth/refresh');
+  const response = await refreshApi.post<RefreshResponse>('/auth/refresh');
 
   return response.data;
 };
