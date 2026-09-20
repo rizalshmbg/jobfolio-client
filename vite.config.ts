@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@api': path.resolve(import.meta.dirname, './src/api'),
+      '@hooks': path.resolve(import.meta.dirname, './src/hooks'),
       '@lib': path.resolve(import.meta.dirname, './src/lib'),
       '@pages': path.resolve(import.meta.dirname, './src/pages'),
       '@stores': path.resolve(import.meta.dirname, './src/stores'),

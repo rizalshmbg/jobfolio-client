@@ -25,6 +25,7 @@
     /* Path */
     "paths": {
       "@api/*": ["./src/api/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@lib/*": ["./src/lib/*"],
       "@pages/*": ["./src/pages/*"],
       "@stores/*": ["./src/stores/*"],
