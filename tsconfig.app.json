@@ -24,9 +24,11 @@
 
     /* Path */
     "paths": {
+      "@api/*": ["./src/api/*"],
       "@lib/*": ["./src/lib/*"],
       "@pages/*": ["./src/pages/*"],
       "@stores/*": ["./src/stores/*"],
+      "@/types/*": ["./src/types/*"],
     }
   },
   "include": ["src"]

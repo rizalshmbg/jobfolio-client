@@ -7,9 +7,11 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      '@api': path.resolve(import.meta.dirname, './src/api'),
       '@lib': path.resolve(import.meta.dirname, './src/lib'),
       '@pages': path.resolve(import.meta.dirname, './src/pages'),
       '@stores': path.resolve(import.meta.dirname, './src/stores'),
+      '@/types': path.resolve(import.meta.dirname, './src/types'),
     },
   }
 });
