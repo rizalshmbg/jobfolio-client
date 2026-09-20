@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router';
 
-import ApplicationDetailPage from './pages/ApplicationDetailPage';
-import ApplicationsPage from './pages/ApplicationsPage';
-import DashboardPage from './pages/DashboardPage';
-import LandingPage from './pages/LandingPage';
-import LoginPage from './pages/LoginPage';
-import ProfilePage from './pages/ProfilePage';
-import RegisterPage from './pages/RegisterPage';
+import ApplicationDetailPage from '@pages/ApplicationDetailPage';
+import ApplicationsPage from '@pages/ApplicationsPage';
+import DashboardPage from '@pages/DashboardPage';
+import LandingPage from '@pages/LandingPage';
+import LoginPage from '@pages/LoginPage';
+import ProfilePage from '@pages/ProfilePage';
+import RegisterPage from '@pages/RegisterPage';
 
 const App = () => {
   return (
