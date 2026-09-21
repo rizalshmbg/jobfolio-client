@@ -1,4 +1,4 @@
-import { api, refreshApi } from '@lib/axios';
+import { api, refreshApi } from '@lib/api';
 
 import type { LoginInput, RegisterInput } from '@validations/auth.validations';
 
