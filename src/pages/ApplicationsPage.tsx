@@ -12,6 +12,7 @@ import type {
 } from '@/types/application';
 import { formatDate } from '@utils/format-date';
 import { useDebounce } from '@hooks/use-debounce';
+import { Link } from 'react-router';
 
 type ApplicationFilters = {
   page: number;
@@ -213,6 +214,7 @@ const ApplicationsPage = () => {
             <p>
               {application.appliedAt ? formatDate(application.appliedAt) : '-'}
             </p>
+            <Link to={`/applications/${application.id}`}>View Detail</Link>
             <hr />
           </div>
         ))
