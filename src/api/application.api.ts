@@ -4,6 +4,7 @@ import type {
   ApplicationsResponse,
   ApplicationDetailResponse,
   CreateApplicationInput,
+  UpdateApplicationInput,
 } from '../types/application';
 
 export const getApplications = async (
@@ -31,6 +32,18 @@ export const createApplication = async (
 ): Promise<ApplicationDetailResponse> => {
   const response = await api.post<ApplicationDetailResponse>(
     '/applications',
+    data,
+  );
+
+  return response.data;
+};
+
+export const updateApplication = async (
+  id: string,
+  data: UpdateApplicationInput,
+): Promise<ApplicationDetailResponse> => {
+  const response = await api.patch<ApplicationDetailResponse>(
+    `applications/${id}`,
     data,
   );
 

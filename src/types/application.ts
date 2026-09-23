@@ -90,3 +90,17 @@ export type CreateApplicationInput = {
   salaryMax?: number;
   notes?: string;
 };
+
+export type UpdateApplicationInput = {
+  company?: string;
+  position?: string;
+  status?: ApplicationStatus;
+  appliedAt?: string | null;
+  jobUrl?: string | null;
+  location?: string | null;
+  employmentType?: EmploymentType | null;
+  workArrangement?: WorkArrangement | null;
+  salaryMin?: number | null;
+  salaryMax?: number | null;
+  notes?: string | null;
+};
