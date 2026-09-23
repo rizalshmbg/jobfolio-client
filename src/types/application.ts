@@ -76,3 +76,17 @@ export type ApplicationDetailResponse = {
   message: string;
   data: Application;
 };
+
+export type CreateApplicationInput = {
+  company: string;
+  position: string;
+  status?: ApplicationStatus;
+  appliedAt?: string;
+  jobUrl?: string;
+  location?: string;
+  employmentType?: EmploymentType;
+  workArrangement?: WorkArrangement;
+  salaryMin?: number;
+  salaryMax?: number;
+  notes?: string;
+};
