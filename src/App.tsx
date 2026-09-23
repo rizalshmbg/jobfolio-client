@@ -9,6 +9,7 @@ import ProfilePage from '@pages/ProfilePage';
 import RegisterPage from '@pages/RegisterPage';
 import ProtectedRoute from '@routes/ProtectedRoute';
 import GuestRoute from '@routes/GuestRoute';
+import CreateApplicationPage from '@pages/CreateApplicationPage';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='/dashboard' element={<DashboardPage />} />
         <Route path='/applications' element={<ApplicationsPage />} />
         <Route path='/applications/:id' element={<ApplicationDetailPage />} />
+        <Route path='/applications/new' element={<CreateApplicationPage />} />
         <Route path='/profile' element={<ProfilePage />} />
       </Route>
     </Routes>
