@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
 import { getApplicationById } from '@api/application.api';
@@ -56,6 +56,8 @@ const ApplicationDetailPage = () => {
 
       <p>Created: {formatDate(application.createdAt)}</p>
       <p>Updated: {formatDate(application.updatedAt)}</p>
+
+      <Link to={`/applications/${id}/edit`}>Edit Application</Link>
     </main>
   );
 };
