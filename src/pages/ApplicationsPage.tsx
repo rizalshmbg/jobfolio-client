@@ -220,6 +220,8 @@ const ApplicationsPage = () => {
         ))
       )}
 
+      <Link to='/applications/new'>Add Application</Link>
+
       <div>
         <p>
           Page {meta.page} of {meta.totalPages}
