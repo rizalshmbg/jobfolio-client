@@ -2,6 +2,7 @@ import { api } from '@lib/api';
 import type {
   ApplicationListParams,
   ApplicationsResponse,
+  ApplicationDetailResponse,
 } from '../types/application';
 
 export const getApplications = async (
@@ -10,6 +11,16 @@ export const getApplications = async (
   const response = await api.get<ApplicationsResponse>('/applications', {
     params,
   });
+
+  return response.data;
+};
+
+export const getApplicationById = async (
+  id: string,
+): Promise<ApplicationDetailResponse> => {
+  const response = await api.get<ApplicationDetailResponse>(
+    `/applications/${id}`,
+  );
 
   return response.data;
 };

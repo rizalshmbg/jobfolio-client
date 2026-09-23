@@ -70,3 +70,9 @@ export type ApplicationsResponse = {
   data: Application[];
   meta: ApplicationPagination;
 };
+
+export type ApplicationDetailResponse = {
+  success: boolean;
+  message: string;
+  data: Application;
+};
