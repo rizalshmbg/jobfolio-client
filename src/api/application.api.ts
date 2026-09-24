@@ -5,6 +5,7 @@ import type {
   ApplicationDetailResponse,
   CreateApplicationInput,
   UpdateApplicationInput,
+  DeleteApplicationResponse,
 } from '../types/application';
 
 export const getApplications = async (
@@ -45,6 +46,16 @@ export const updateApplication = async (
   const response = await api.patch<ApplicationDetailResponse>(
     `applications/${id}`,
     data,
+  );
+
+  return response.data;
+};
+
+export const deleteApplication = async (
+  id: string,
+): Promise<DeleteApplicationResponse> => {
+  const response = await api.delete<DeleteApplicationResponse>(
+    `/applications/${id}`,
   );
 
   return response.data;

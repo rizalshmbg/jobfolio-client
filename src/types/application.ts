@@ -104,3 +104,8 @@ export type UpdateApplicationInput = {
   salaryMax?: number | null;
   notes?: string | null;
 };
+
+export type DeleteApplicationResponse = {
+  success: boolean;
+  message: string;
+}

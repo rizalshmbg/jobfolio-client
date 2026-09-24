@@ -1,17 +1,51 @@
-import { Link, useParams } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
+import { Link, useParams, useNavigate } from 'react-router';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { getApplicationById } from '@api/application.api';
+import { getApplicationById, deleteApplication } from '@api/application.api';
 import { formatDate } from '@utils/format-date';
 
 const ApplicationDetailPage = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const applicationQuery = useQuery({
     queryKey: ['application', id],
     queryFn: () => getApplicationById(id!),
     enabled: Boolean(id),
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: () => deleteApplication(id!),
+    onSuccess: async () => {
+      queryClient.removeQueries({
+        queryKey: ['application', id],
+      });
+
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['applications'],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['dashboard'],
+        }),
+      ]);
+
+      navigate('/applications');
+    },
+  });
+
+  const handleDelete = () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this application?',
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    deleteMutation.mutate();
+  };
 
   if (!id) {
     return <p>Invalid application ID.</p>;
@@ -29,19 +63,18 @@ const ApplicationDetailPage = () => {
 
   return (
     <main>
-      <h1>{application.position}</h1>
+      {deleteMutation.isError && <p>Failed to delete application.</p>}
 
+      <h1>{application.position}</h1>
       <p>Company: {application.company}</p>
       <p>Status: {application.status}</p>
       <p>Location: {application.location ?? '-'}</p>
       <p>Employment Type: {application.employmentType ?? '-'}</p>
       <p>Work Arrangement: {application.workArrangement ?? '-'}</p>
-
       <p>
         Applied At:{' '}
         {application.appliedAt ? formatDate(application.appliedAt) : '-'}
       </p>
-
       <a
         target='_blank'
         rel='noreferrer'
@@ -49,13 +82,18 @@ const ApplicationDetailPage = () => {
       >
         Job Url
       </a>
-
       <p>Minimum Salary: {application.salaryMin ?? '-'}</p>
       <p>Maximum Salary: {application.salaryMax ?? '-'}</p>
       <p>Notes: {application.notes ?? '-'}</p>
-
       <p>Created: {formatDate(application.createdAt)}</p>
       <p>Updated: {formatDate(application.updatedAt)}</p>
+      <button
+        type='button'
+        onClick={handleDelete}
+        disabled={deleteMutation.isPending}
+      >
+        {deleteMutation.isPending ? 'Deleting...' : 'Delete Application'}
+      </button>
 
       <Link to={`/applications/${id}/edit`}>Edit Application</Link>
     </main>
