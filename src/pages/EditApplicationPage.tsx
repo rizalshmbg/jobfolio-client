@@ -6,10 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { getApplicationById, updateApplication } from '@api/application.api';
 import {
-  createApplicationSchema,
-  type CreateApplicationFormInput,
+  applicationFormSchema,
+  type ApplicationFormInput,
 } from '@validations/application.validations';
 import type { UpdateApplicationInput } from '@/types/application';
+import ApplicationForm from '@components/application/ApplicationForm';
 
 const EditApplicationPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,8 +28,8 @@ const EditApplicationPage = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreateApplicationFormInput>({
-    resolver: zodResolver(createApplicationSchema),
+  } = useForm<ApplicationFormInput>({
+    resolver: zodResolver(applicationFormSchema),
     defaultValues: {
       company: '',
       position: '',
@@ -63,7 +64,7 @@ const EditApplicationPage = () => {
     },
   });
 
-  const onSubmit = (data: CreateApplicationFormInput) => {
+  const onSubmit = (data: ApplicationFormInput) => {
     const payload: UpdateApplicationInput = {
       company: data.company,
       position: data.position,
@@ -131,104 +132,12 @@ const EditApplicationPage = () => {
       {updateMutation.isError && <p>Failed to update application.</p>}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor='company'>Company</label>
-          <input id='company' type='text' {...register('company')} />
-          {errors.company && <p>{errors.company.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor='position'>Position</label>
-          <input id='position' type='text' {...register('position')} />
-          {errors.position && <p>{errors.position.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor='status'>Status</label>
-          <select id='status' {...register('status')}>
-            <option value='WISHLIST'>Wishlist</option>
-            <option value='APPLIED'>Applied</option>
-            <option value='SCREENING'>Screening</option>
-            <option value='INTERVIEW'>Interview</option>
-            <option value='TECHNICAL_TEST'>Technical Test</option>
-            <option value='OFFER'>Offer</option>
-            <option value='REJECTED'>Rejected</option>
-            <option value='WITHDRAWN'>Withdrawn</option>
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor='appliedAt'>Applied At</label>
-          <input type='date' id='appliedAt' {...register('appliedAt')} />
-        </div>
-
-        <div>
-          <label htmlFor='jobUrl'>JobUrl</label>
-          <input id='jobUrl' type='url' {...register('jobUrl')} />
-          {errors.jobUrl && <p>{errors.jobUrl.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor='location'>Location</label>
-          <input id='location' type='text' {...register('location')} />
-          {errors.location && <p>{errors.location.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor='employmentType'>Select Employment Type</label>
-          <select id='employmentType' {...register('employmentType')}>
-            <option value=''>Select employment type</option>
-            <option value='FULL_TIME'>Full Time</option>
-            <option value='PART_TIME'>Part Time</option>
-            <option value='CONTRACT'>Contract</option>
-            <option value='INTERNSHIP'>Internship</option>
-            <option value='FREELANCE'>Freelance</option>
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor='workArrangement'>Select Work Arrangement Type</label>
-          <select id='workArrangement' {...register('workArrangement')}>
-            <option value=''>Select Work Arrangements</option>
-            <option value='ONSITE'>Onsite</option>
-            <option value='HYBRID'>Hybrid</option>
-            <option value='REMOTE'>Remote</option>
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor='salaryMin'>Salary Min</label>
-          <input
-            id='salaryMin'
-            type='number'
-            min='0'
-            step='1'
-            {...register('salaryMin')}
-          />
-          {errors.salaryMin && <p>{errors.salaryMin.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor='salaryMax'>Salary Max</label>
-          <input
-            id='salaryMax'
-            type='number'
-            min='0'
-            step='1'
-            {...register('salaryMax')}
-          />
-          {errors.salaryMax && <p>{errors.salaryMax.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor='notes'>Notes</label>
-          <textarea id='notes' {...register('notes')} />
-          {errors.notes && <p>{errors.notes.message}</p>}
-        </div>
-
-        <button type='submit' disabled={updateMutation.isPending}>
-          {updateMutation.isPending ? 'Updating...' : 'Update Application'}
-        </button>
+        <ApplicationForm
+          register={register}
+          errors={errors}
+          isPending={updateMutation.isPending}
+          submitLabel='Update Application'
+        />
       </form>
     </main>
   );

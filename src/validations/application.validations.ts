@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const createApplicationSchema = z
+export const applicationFormSchema = z
   .object({
     company: z
       .string()
@@ -70,6 +70,6 @@ export const createApplicationSchema = z
     },
   );
 
-export type CreateApplicationFormInput = z.infer<
-  typeof createApplicationSchema
+export type ApplicationFormInput = z.infer<
+  typeof applicationFormSchema
 >;
