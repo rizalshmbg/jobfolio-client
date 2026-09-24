@@ -8,9 +8,12 @@ import {
   profileFormSchema,
   type ProfileFormInput,
 } from '@validations/profile.validations';
+import { useAuthStore } from '@stores/auth.store';
 
 const ProfilePage = () => {
   const queryClient = useQueryClient();
+
+  const updateUser = useAuthStore((state) => state.updateUser);
 
   const profileQuery = useQuery({
     queryKey: ['profile'],
@@ -20,7 +23,9 @@ const ProfilePage = () => {
   const updateMutation = useMutation({
     mutationFn: updateProfile,
 
-    onSuccess: async () => {
+    onSuccess: async (response) => {
+      updateUser({ name: response.data.name });
+
       await queryClient.invalidateQueries({
         queryKey: ['profile'],
       });
@@ -72,7 +77,6 @@ const ProfilePage = () => {
       {updateMutation.isError && <p>Failed to update profile.</p>}
 
       {updateMutation.isSuccess && <p>Profile updated successfully.</p>}
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor='name'>Name</label>

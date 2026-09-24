@@ -10,6 +10,8 @@ type AuthState = {
 
   setAuthenticated: (user: AuthUser) => void;
   setUnauthenticated: () => void;
+
+  updateUser: (user: Partial<AuthUser>) => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -29,4 +31,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       status: 'unauthenticated',
     });
   },
+
+  updateUser: (updateUser) =>
+    set((state) => ({
+      user: state.user ? { ...state.user, ...updateUser } : null,
+    })),
 }));
