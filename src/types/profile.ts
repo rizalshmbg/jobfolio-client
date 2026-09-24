@@ -11,3 +11,7 @@ export type ProfileResponse = {
   message: string;
   data: Profile;
 };
+
+export type UpdateProfileInput = {
+  name?:string;
+}
