@@ -6,10 +6,13 @@ import {
   applicationFormSchema,
   type ApplicationFormInput,
 } from '@validations/application.validations';
-import type { CreateApplicationInput } from '@/types/application';
 import { createApplication } from '@api/application.api';
 import { useNavigate } from 'react-router';
 import ApplicationForm from '@components/application/ApplicationForm';
+import {
+  applicationFormDefaultValues,
+  formToCreateApplication,
+} from '@utils/application-form';
 
 const CreateApplicationPage = () => {
   const navigate = useNavigate();
@@ -21,19 +24,7 @@ const CreateApplicationPage = () => {
     formState: { errors },
   } = useForm<ApplicationFormInput>({
     resolver: zodResolver(applicationFormSchema),
-    defaultValues: {
-      company: '',
-      position: '',
-      status: 'APPLIED',
-      appliedAt: '',
-      jobUrl: '',
-      location: '',
-      employmentType: '',
-      workArrangement: '',
-      salaryMin: '',
-      salaryMax: '',
-      notes: '',
-    },
+    defaultValues: applicationFormDefaultValues,
   });
 
   const createMutation = useMutation({
@@ -54,45 +45,7 @@ const CreateApplicationPage = () => {
   });
 
   const onSubmit = (data: ApplicationFormInput) => {
-    const payload: CreateApplicationInput = {
-      company: data.company,
-      position: data.position,
-      status: data.status,
-
-      ...(data.appliedAt && {
-        appliedAt: data.appliedAt,
-      }),
-
-      ...(data.jobUrl && {
-        jobUrl: data.jobUrl,
-      }),
-
-      ...(data.location && {
-        location: data.location,
-      }),
-
-      ...(data.employmentType && {
-        employmentType: data.employmentType,
-      }),
-
-      ...(data.workArrangement && {
-        workArrangement: data.workArrangement,
-      }),
-
-      ...(data.salaryMin && {
-        salaryMin: Number(data.salaryMin),
-      }),
-
-      ...(data.salaryMax && {
-        salaryMax: Number(data.salaryMax),
-      }),
-
-      ...(data.notes && {
-        notes: data.notes,
-      }),
-    };
-
-    createMutation.mutate(payload);
+    createMutation.mutate(formToCreateApplication(data));
   };
 
   return (

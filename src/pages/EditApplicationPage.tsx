@@ -11,6 +11,7 @@ import {
 } from '@validations/application.validations';
 import type { UpdateApplicationInput } from '@/types/application';
 import ApplicationForm from '@components/application/ApplicationForm';
+import { applicationFormDefaultValues, applicationToFormValues, formToUpdateApplication } from '@utils/application-form';
 
 const EditApplicationPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,19 +31,7 @@ const EditApplicationPage = () => {
     formState: { errors },
   } = useForm<ApplicationFormInput>({
     resolver: zodResolver(applicationFormSchema),
-    defaultValues: {
-      company: '',
-      position: '',
-      status: 'APPLIED',
-      appliedAt: '',
-      jobUrl: '',
-      location: '',
-      employmentType: '',
-      workArrangement: '',
-      salaryMin: '',
-      salaryMax: '',
-      notes: '',
-    },
+    defaultValues: applicationFormDefaultValues,
   });
 
   const updateMutation = useMutation({
@@ -65,21 +54,7 @@ const EditApplicationPage = () => {
   });
 
   const onSubmit = (data: ApplicationFormInput) => {
-    const payload: UpdateApplicationInput = {
-      company: data.company,
-      position: data.position,
-      status: data.status,
-      appliedAt: data.appliedAt || null,
-      jobUrl: data.jobUrl || null,
-      location: data.location || null,
-      employmentType: data.employmentType || null,
-      workArrangement: data.workArrangement || null,
-      salaryMin: data.salaryMin !== '' ? Number(data.salaryMin) : null,
-      salaryMax: data.salaryMax !== '' ? Number(data.salaryMax) : null,
-      notes: data.notes || null,
-    };
-
-    updateMutation.mutate(payload);
+    updateMutation.mutate(formToUpdateApplication(data));
   };
 
   useEffect(() => {
@@ -89,28 +64,7 @@ const EditApplicationPage = () => {
       return;
     }
 
-    reset({
-      company: application.company,
-      position: application.position,
-      status: application.status,
-
-      appliedAt: application.appliedAt
-        ? application.appliedAt.slice(0, 10)
-        : '',
-
-      jobUrl: application.jobUrl ?? '',
-      location: application.location ?? '',
-      employmentType: application.employmentType ?? '',
-      workArrangement: application.workArrangement ?? '',
-
-      salaryMin:
-        application.salaryMin !== null ? String(application.salaryMin) : '',
-
-      salaryMax:
-        application.salaryMax !== null ? String(application.salaryMax) : '',
-
-      notes: application.notes ?? '',
-    });
+    reset(applicationToFormValues(application));
   }, [applicationQuery.data, reset]);
 
   if (!id) {
