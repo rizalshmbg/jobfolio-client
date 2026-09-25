@@ -1,38 +1,15 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 
-import { logout } from '@api/auth.api';
 import { getDashboard } from '@api/dashboard.api';
-import { clearAccessToken } from '@lib/auth-token';
 import { queryKeys } from '@lib/query-keys';
-import { useAuthStore } from '@stores/auth.store';
 import { formatDate } from '@utils/format-date';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 const DashboardPage = () => {
-  const navigate = useNavigate();
-
-  const user = useAuthStore((state) => state.user);
-  const status = useAuthStore((state) => state.status);
-  const setUnauthenticated = useAuthStore((state) => state.setUnauthenticated);
-
   const dashboardQuery = useQuery({
     queryKey: queryKeys.dashboard,
     queryFn: getDashboard,
   });
-
-  const logoutMutation = useMutation({
-    mutationFn: logout,
-    onSuccess: () => {
-      clearAccessToken();
-      setUnauthenticated();
-      navigate('/login', { replace: true });
-    },
-  });
-
-  const onLogout = () => {
-    logoutMutation.mutate();
-  };
 
   if (dashboardQuery.isPending) {
     return <p>Loading dashboard...</p>;
@@ -54,11 +31,6 @@ const DashboardPage = () => {
   return (
     <main>
       <h1>DashboardPage</h1>
-
-      {user && <p>Welcome, {user.name}</p>}
-
-      <p>Status: {status}</p>
-      <p>User: {user?.name ?? 'No user'}</p>
       <p>Total: {dashboard.summary.total}</p>
       <p>Applied: {dashboard.summary.applied}</p>
       <p>Interview: {dashboard.summary.interview}</p>
@@ -86,14 +58,6 @@ const DashboardPage = () => {
           </div>
         ))
       )}
-
-      <button
-        type='button'
-        onClick={onLogout}
-        disabled={logoutMutation.isPending}
-      >
-        {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
-      </button>
     </main>
   );
 };
