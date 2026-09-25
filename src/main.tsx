@@ -7,15 +7,18 @@ import './index.css';
 import App from './App';
 import { queryClient } from '@lib/query-client';
 import { setupAxiosInterceptors } from '@lib/axios';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 setupAxiosInterceptors();
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
-    <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </QueryClientProvider>
+    </TooltipProvider>
+  </QueryClientProvider>,
   // </StrictMode>,
 );
