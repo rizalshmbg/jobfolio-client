@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { logout } from '@api/auth.api';
 import { getDashboard } from '@api/dashboard.api';
 import { clearAccessToken } from '@lib/auth-token';
+import { queryKeys } from '@lib/query-keys';
 import { useAuthStore } from '@stores/auth.store';
 import { formatDate } from '@utils/format-date';
 
@@ -15,7 +16,7 @@ const DashboardPage = () => {
   const setUnauthenticated = useAuthStore((state) => state.setUnauthenticated);
 
   const dashboardQuery = useQuery({
-    queryKey: ['dashboard'],
+    queryKey: queryKeys.dashboard,
     queryFn: getDashboard,
   });
 

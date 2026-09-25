@@ -13,6 +13,7 @@ import type {
 import { formatDate } from '@utils/format-date';
 import { useDebounce } from '@hooks/use-debounce';
 import { Link } from 'react-router';
+import { queryKeys } from '@lib/query-keys';
 
 type ApplicationFilters = {
   page: number;
@@ -57,7 +58,7 @@ const ApplicationsPage = () => {
   };
 
   const applicationsQuery = useQuery({
-    queryKey: ['applications', params],
+    queryKey: queryKeys.applications.list(params),
     queryFn: () => getApplications(params),
     placeholderData: keepPreviousData,
   });

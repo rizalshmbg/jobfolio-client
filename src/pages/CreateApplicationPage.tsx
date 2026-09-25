@@ -13,6 +13,7 @@ import {
   applicationFormDefaultValues,
   formToCreateApplication,
 } from '@utils/application-form';
+import { queryKeys } from '@lib/query-keys';
 
 const CreateApplicationPage = () => {
   const navigate = useNavigate();
@@ -32,11 +33,11 @@ const CreateApplicationPage = () => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['applications'],
+          queryKey: queryKeys.applications.all,
         }),
 
         queryClient.invalidateQueries({
-          queryKey: ['dashboard'],
+          queryKey: queryKeys.dashboard,
         }),
       ]);
 

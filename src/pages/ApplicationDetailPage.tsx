@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { getApplicationById, deleteApplication } from '@api/application.api';
 import { formatDate } from '@utils/format-date';
+import { queryKeys } from '@lib/query-keys';
 
 const ApplicationDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -10,7 +11,7 @@ const ApplicationDetailPage = () => {
   const queryClient = useQueryClient();
 
   const applicationQuery = useQuery({
-    queryKey: ['application', id],
+    queryKey: queryKeys.applications.detail(id!),
     queryFn: () => getApplicationById(id!),
     enabled: Boolean(id),
   });
@@ -19,15 +20,15 @@ const ApplicationDetailPage = () => {
     mutationFn: () => deleteApplication(id!),
     onSuccess: async () => {
       queryClient.removeQueries({
-        queryKey: ['application', id],
+        queryKey: queryKeys.applications.detail(id!),
       });
 
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['applications'],
+          queryKey: queryKeys.applications.all,
         }),
         queryClient.invalidateQueries({
-          queryKey: ['dashboard'],
+          queryKey: queryKeys.dashboard,
         }),
       ]);
 

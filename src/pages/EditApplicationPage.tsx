@@ -12,6 +12,7 @@ import {
 import type { UpdateApplicationInput } from '@/types/application';
 import ApplicationForm from '@components/application/ApplicationForm';
 import { applicationFormDefaultValues, applicationToFormValues, formToUpdateApplication } from '@utils/application-form';
+import { queryKeys } from '@lib/query-keys';
 
 const EditApplicationPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +20,7 @@ const EditApplicationPage = () => {
   const navigate = useNavigate();
 
   const applicationQuery = useQuery({
-    queryKey: ['application', id],
+    queryKey: queryKeys.applications.detail(id!),
     queryFn: () => getApplicationById(id!),
     enabled: Boolean(id),
   });
@@ -39,13 +40,13 @@ const EditApplicationPage = () => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['application', id],
+          queryKey: queryKeys.applications.detail(id!),
         }),
         queryClient.invalidateQueries({
-          queryKey: ['applications'],
+          queryKey: queryKeys.applications.all,
         }),
         queryClient.invalidateQueries({
-          queryKey: ['dashboard'],
+          queryKey: queryKeys.dashboard,
         }),
       ]);
 

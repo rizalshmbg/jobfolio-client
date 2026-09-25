@@ -9,6 +9,7 @@ import {
   type ProfileFormInput,
 } from '@validations/profile.validations';
 import { useAuthStore } from '@stores/auth.store';
+import { queryKeys } from '@lib/query-keys';
 
 const ProfilePage = () => {
   const queryClient = useQueryClient();
@@ -16,7 +17,7 @@ const ProfilePage = () => {
   const updateUser = useAuthStore((state) => state.updateUser);
 
   const profileQuery = useQuery({
-    queryKey: ['profile'],
+    queryKey: queryKeys.profile,
     queryFn: getProfile,
   });
 
@@ -27,7 +28,7 @@ const ProfilePage = () => {
       updateUser({ name: response.data.name });
 
       await queryClient.invalidateQueries({
-        queryKey: ['profile'],
+        queryKey: queryKeys.profile,
       });
     },
   });
