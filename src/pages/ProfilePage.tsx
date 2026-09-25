@@ -10,6 +10,7 @@ import {
 } from '@validations/profile.validations';
 import { useAuthStore } from '@stores/auth.store';
 import { queryKeys } from '@lib/query-keys';
+import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 const ProfilePage = () => {
   const queryClient = useQueryClient();
@@ -66,7 +67,14 @@ const ProfilePage = () => {
   }
 
   if (profileQuery.isError) {
-    return <p>Failed to load profile.</p>;
+    return (
+      <p>
+        {getApiErrorMessage(
+          profileQuery.error,
+          'Failed to load profile.',
+        )}
+      </p>
+    );
   }
 
   const profile = profileQuery.data.data;
@@ -75,7 +83,14 @@ const ProfilePage = () => {
     <main>
       <h1>ProfilePage</h1>
 
-      {updateMutation.isError && <p>Failed to update profile.</p>}
+      {updateMutation.isError && (
+        <p>
+          {getApiErrorMessage(
+            updateMutation.error,
+            'Failed to update profile.',
+          )}
+        </p>
+      )}
 
       {updateMutation.isSuccess && <p>Profile updated successfully.</p>}
       <form onSubmit={handleSubmit(onSubmit)}>

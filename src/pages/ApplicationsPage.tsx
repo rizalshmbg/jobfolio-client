@@ -14,6 +14,7 @@ import { formatDate } from '@utils/format-date';
 import { useDebounce } from '@hooks/use-debounce';
 import { Link } from 'react-router';
 import { queryKeys } from '@lib/query-keys';
+import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 type ApplicationFilters = {
   page: number;
@@ -134,7 +135,14 @@ const ApplicationsPage = () => {
   }
 
   if (applicationsQuery.isError) {
-    return <p>Failed to load applications.</p>;
+    return (
+      <p>
+        {getApiErrorMessage(
+          applicationsQuery.error,
+          'Failed to load application.',
+        )}
+      </p>
+    );
   }
 
   const applications = applicationsQuery.data.data;

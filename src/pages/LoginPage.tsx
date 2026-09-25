@@ -8,6 +8,7 @@ import { loginSchema } from '@validations/auth.validations';
 import { login } from '@api/auth.api';
 import { setAccessToken } from '@lib/auth-token';
 import { useAuthStore } from '@stores/auth.store';
+import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -43,6 +44,10 @@ const LoginPage = () => {
   return (
     <main>
       <h1>Login</h1>
+
+      {loginMutation.isError && (
+        <p>{getApiErrorMessage(loginMutation.error, 'Failed to login.')}</p>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>

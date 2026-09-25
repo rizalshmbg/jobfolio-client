@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getApplicationById, deleteApplication } from '@api/application.api';
 import { formatDate } from '@utils/format-date';
 import { queryKeys } from '@lib/query-keys';
+import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 const ApplicationDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -57,14 +58,28 @@ const ApplicationDetailPage = () => {
   }
 
   if (applicationQuery.isError) {
-    return <p>Failed to load application.</p>;
+    return (
+      <p>
+        {getApiErrorMessage(
+          applicationQuery.error,
+          'Failed to load application.',
+        )}
+      </p>
+    );
   }
 
   const application = applicationQuery.data.data;
 
   return (
     <main>
-      {deleteMutation.isError && <p>Failed to delete application.</p>}
+      {deleteMutation.isError && (
+        <p>
+          {getApiErrorMessage(
+            deleteMutation.error,
+            'Failed to delete application.',
+          )}
+        </p>
+      )}
 
       <h1>{application.position}</h1>
       <p>Company: {application.company}</p>

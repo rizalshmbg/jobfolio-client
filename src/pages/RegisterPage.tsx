@@ -8,6 +8,7 @@ import {
   type RegisterInput,
 } from '@validations/auth.validations';
 import { register as registerUser } from '@api/auth.api';
+import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -37,6 +38,12 @@ const RegisterPage = () => {
   return (
     <main>
       <h1>Register</h1>
+
+      {registerMutation.isError && (
+        <p>
+          {getApiErrorMessage(registerMutation.error, 'Failed to register.')}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>

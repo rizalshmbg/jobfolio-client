@@ -7,6 +7,7 @@ import { clearAccessToken } from '@lib/auth-token';
 import { queryKeys } from '@lib/query-keys';
 import { useAuthStore } from '@stores/auth.store';
 import { formatDate } from '@utils/format-date';
+import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -38,8 +39,15 @@ const DashboardPage = () => {
   }
 
   if (dashboardQuery.isError) {
-    return <p>Failed to load dashboard.</p>;
-  }
+      return (
+        <p>
+          {getApiErrorMessage(
+            dashboardQuery.error,
+            'Failed to load dashboard.',
+          )}
+        </p>
+      );
+    }
 
   const dashboard = dashboardQuery.data.data;
 

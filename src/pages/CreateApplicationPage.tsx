@@ -14,6 +14,7 @@ import {
   formToCreateApplication,
 } from '@utils/application-form';
 import { queryKeys } from '@lib/query-keys';
+import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 const CreateApplicationPage = () => {
   const navigate = useNavigate();
@@ -53,7 +54,14 @@ const CreateApplicationPage = () => {
     <main>
       <h1>CreateApplicationPage</h1>
 
-      {createMutation.isError && <p>Failed to create application.</p>}
+      {createMutation.isError && (
+        <p>
+          {getApiErrorMessage(
+            createMutation.error,
+            'Failed to create application.',
+          )}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <ApplicationForm

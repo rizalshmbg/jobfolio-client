@@ -11,8 +11,13 @@ import {
 } from '@validations/application.validations';
 import type { UpdateApplicationInput } from '@/types/application';
 import ApplicationForm from '@components/application/ApplicationForm';
-import { applicationFormDefaultValues, applicationToFormValues, formToUpdateApplication } from '@utils/application-form';
+import {
+  applicationFormDefaultValues,
+  applicationToFormValues,
+  formToUpdateApplication,
+} from '@utils/application-form';
 import { queryKeys } from '@lib/query-keys';
+import { getApiErrorMessage } from '@utils/get-api-error.message';
 
 const EditApplicationPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -77,14 +82,28 @@ const EditApplicationPage = () => {
   }
 
   if (applicationQuery.isError) {
-    return <p>Failed to load application.</p>;
+    return (
+      <p>
+        {getApiErrorMessage(
+          applicationQuery.error,
+          'Failed to load application.',
+        )}
+      </p>
+    );
   }
 
   return (
     <main>
       <h1>EditApplicationPage</h1>
 
-      {updateMutation.isError && <p>Failed to update application.</p>}
+      {updateMutation.isError && (
+        <p>
+          {getApiErrorMessage(
+            updateMutation.error,
+            'Failed to update application.',
+          )}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <ApplicationForm
