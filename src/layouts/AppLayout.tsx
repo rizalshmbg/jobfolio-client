@@ -1,9 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
-import { NavLink, Outlet, useNavigate } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 
 import { logout } from '@api/auth.api';
 import { clearAccessToken } from '@lib/auth-token';
 import { useAuthStore } from '@stores/auth.store';
+import {
+  SidebarInset,
+  SidebarProvider,
+} from '@/components/ui/sidebar';
+import AppSidebar from '@/components/layout/AppSidebar';
+import AppHeader from '@/components/layout/AppHeader';
 
 const AppLayout = () => {
   const navigate = useNavigate();
@@ -29,31 +35,21 @@ const AppLayout = () => {
   };
 
   return (
-    <div>
-      <aside>
-        <h1>JobFolio</h1>
+    <SidebarProvider>
+      <AppSidebar
+        username={user?.name}
+        isLoggingOut={logoutMutation.isPending}
+        onLogout={onLogout}
+      />
 
-        {user && <p>{user.name}</p>}
+      <SidebarInset>
+        <AppHeader />
 
-        <nav>
-          <NavLink to='/dashboard'>Dashboard</NavLink>
-          <NavLink to='/applications'>Applications</NavLink>
-          <NavLink to='/profile'>Profile</NavLink>
-        </nav>
-
-        <button
-          type='button'
-          onClick={onLogout}
-          disabled={logoutMutation.isPending}
-        >
-          {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
-        </button>
-      </aside>
-
-      <main>
-        <Outlet />
-      </main>
-    </div>
+        <main className='flex-1 p-4'>
+          <Outlet />
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 
