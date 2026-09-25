@@ -24,6 +24,7 @@
 
     /* Path */
     "paths": {
+      "@/*": ["./src/*"],
       "@api/*": ["./src/api/*"],
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],
@@ -34,7 +35,7 @@
       "@stores/*": ["./src/stores/*"],
       "@/types/*": ["./src/types/*"],
       "@utils/*": ["./src/utils/*"],
-      "@validations/*": ["./src/validations/*"],
+      "@validations/*": ["./src/validations/*"]
     }
   },
   "include": ["src"]
