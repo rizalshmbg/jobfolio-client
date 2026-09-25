@@ -1,5 +1,7 @@
 import { Route, Routes } from 'react-router';
 
+import AppLayout from '@layouts/AppLayout';
+
 import ApplicationDetailPage from '@pages/ApplicationDetailPage';
 import ApplicationsPage from '@pages/ApplicationsPage';
 import DashboardPage from '@pages/DashboardPage';
@@ -25,12 +27,14 @@ const App = () => {
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
-        <Route path='/dashboard' element={<DashboardPage />} />
-        <Route path='/applications' element={<ApplicationsPage />} />
-        <Route path='/applications/:id' element={<ApplicationDetailPage />} />
-        <Route path='/applications/new' element={<CreateApplicationPage />} />
-        <Route path='/applications/:id/edit' element={<EditApplicationPage />} />
-        <Route path='/profile' element={<ProfilePage />} />
+        <Route element={<AppLayout />}>
+          <Route path='/dashboard' element={<DashboardPage />} />
+          <Route path='/applications' element={<ApplicationsPage />} />
+          <Route path='/applications/:id' element={<ApplicationDetailPage />} />
+          <Route path='/applications/new' element={<CreateApplicationPage />} />
+          <Route path='/applications/:id/edit' element={<EditApplicationPage />} />
+          <Route path='/profile' element={<ProfilePage />} />
+        </Route>
       </Route>
     </Routes>
   );
