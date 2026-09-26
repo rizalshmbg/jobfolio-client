@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +19,12 @@ import {
 } from '@utils/application-form';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
+import {
+  BackLink,
+  ErrorState,
+  PageHeading,
+  PageSkeleton,
+} from '@/components/workspace';
 
 const EditApplicationPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -56,6 +63,10 @@ const EditApplicationPage = () => {
       ]);
 
       navigate(`/applications/${id}`);
+      toast.success('Application updated successfully.');
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, 'Failed to update application.'));
     },
   });
 
@@ -74,46 +85,43 @@ const EditApplicationPage = () => {
   }, [applicationQuery.data, reset]);
 
   if (!id) {
-    return <p>Invalid application ID.</p>;
+    return <ErrorState message='This application link is invalid.' />;
   }
 
   if (applicationQuery.isPending) {
-    return <p>Loading application...</p>;
+    return <PageSkeleton />;
   }
 
   if (applicationQuery.isError) {
     return (
-      <p>
-        {getApiErrorMessage(
+      <ErrorState
+        message={getApiErrorMessage(
           applicationQuery.error,
           'Failed to load application.',
         )}
-      </p>
+        retry={() => void applicationQuery.refetch()}
+      />
     );
   }
 
   return (
-    <main>
-      <h1>EditApplicationPage</h1>
+    <div className='form-page'>
+      <BackLink to={`/applications/${id}`}>Back to application</BackLink>
+      <PageHeading
+        title='Keep your next move up to date'
+        description='Update the details, track a new stage, or capture something worth remembering.'
+      />
 
-      {updateMutation.isError && (
-        <p>
-          {getApiErrorMessage(
-            updateMutation.error,
-            'Failed to update application.',
-          )}
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ApplicationForm
           register={register}
           errors={errors}
           isPending={updateMutation.isPending}
-          submitLabel='Update Application'
+          submitLabel='Save changes'
+          cancelTo={`/applications/${id}`}
         />
       </form>
-    </main>
+    </div>
   );
 };
 
