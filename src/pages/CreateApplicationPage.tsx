@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import {
   applicationFormSchema,
@@ -15,6 +16,7 @@ import {
 } from '@utils/application-form';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
+import { BackLink, PageHeading } from '@/components/workspace';
 
 const CreateApplicationPage = () => {
   const navigate = useNavigate();
@@ -43,6 +45,10 @@ const CreateApplicationPage = () => {
       ]);
 
       navigate('/applications');
+      toast.success('Application added successfully.');
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, 'Failed to create application.'));
     },
   });
 
@@ -51,27 +57,22 @@ const CreateApplicationPage = () => {
   };
 
   return (
-    <main>
-      <h1>CreateApplicationPage</h1>
+    <div className='form-page'>
+      <BackLink />
+      <PageHeading
+        title='A new opportunity'
+        description='Add an application to your tracker. The next chapter starts with a small step.'
+      />
 
-      {createMutation.isError && (
-        <p>
-          {getApiErrorMessage(
-            createMutation.error,
-            'Failed to create application.',
-          )}
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ApplicationForm
           register={register}
           errors={errors}
           isPending={createMutation.isPending}
-          submitLabel='Create Application'
+          submitLabel='Add application'
         />
       </form>
-    </main>
+    </div>
   );
 };
 export default CreateApplicationPage;
