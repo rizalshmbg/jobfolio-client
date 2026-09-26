@@ -239,6 +239,7 @@ describe('ApplicationsPage', () => {
     expect(screen.getByRole('combobox', { name: 'Application status' })).toHaveValue('');
   });
 
+  // Includes two real search debounce periods and several full-table updates.
   it('combines search, status, advanced filters, and sorting, then resets all controls and request parameters', async () => {
     const receivedParams = mockApplications();
     const user = renderApplicationsPage();
@@ -273,7 +274,7 @@ describe('ApplicationsPage', () => {
     expect(screen.getByRole('combobox', { name: 'Sort by' })).toHaveValue('createdAt');
     expect(screen.getByRole('combobox', { name: 'Order' })).toHaveValue('desc');
     expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument();
-  });
+  }, 10_000);
 
   it('keeps previous rows visible and disables pagination while loading the next page', async () => {
     const pending = deferredResponse();
