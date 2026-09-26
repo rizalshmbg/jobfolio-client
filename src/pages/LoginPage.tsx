@@ -1,7 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
+import { Link, useNavigate } from 'react-router';
+import { ArrowRight, LoaderCircle } from 'lucide-react';
+import AuthLayout from '@layouts/AuthLayout';
+import { Field } from '@/components/workspace';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 import type { LoginInput } from '@validations/auth.validations';
 import { loginSchema } from '@validations/auth.validations';
@@ -31,9 +37,10 @@ const LoginPage = () => {
       navigate('/dashboard', {
         replace: true,
       });
+      toast.success('You’re logged in. Welcome back!');
     },
     onError: (error) => {
-      console.log(error);
+      toast.error(getApiErrorMessage(error, 'Failed to log in.'));
     },
   });
 
@@ -42,31 +49,61 @@ const LoginPage = () => {
   };
 
   return (
-    <main>
-      <h1>Login</h1>
-
-      {loginMutation.isError && (
-        <p>{getApiErrorMessage(loginMutation.error, 'Failed to login.')}</p>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor='email'>Email</label>
-          <input id='email' type='text' {...register('email')} />
-          {errors.email && <p>{errors.email.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor='password'>Password</label>
-          <input id='password' type='password' {...register('password')} />
-          {errors.password && <p>{errors.password.message}</p>}
-        </div>
-
-        <button type='submit' disabled={loginMutation.isPending}>
-          {loginMutation.isPending ? 'Logging in...' : 'Login'}
-        </button>
+    <AuthLayout
+      title='Welcome back.'
+      description='Your applications, your progress, your next move. Pick up right where you left off.'
+    >
+      <form onSubmit={handleSubmit(onSubmit)} className='space-y-5' noValidate>
+        <Field id='email' label='Email address' error={errors.email?.message}>
+          <Input
+            id='email'
+            type='email'
+            autoComplete='email'
+            placeholder='you@example.com'
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? 'email-error' : undefined}
+            {...register('email')}
+          />
+        </Field>
+        <Field id='password' label='Password' error={errors.password?.message}>
+          <Input
+            id='password'
+            type='password'
+            autoComplete='current-password'
+            placeholder='Enter your password'
+            aria-invalid={!!errors.password}
+            aria-describedby={errors.password ? 'password-error' : undefined}
+            {...register('password')}
+          />
+        </Field>
+        <Button
+          type='submit'
+          disabled={loginMutation.isPending}
+          className='w-full h-11'
+        >
+          {loginMutation.isPending ? (
+            <>
+              <LoaderCircle className='animate-spin' />
+              Logging in...
+            </>
+          ) : (
+            <>
+              Log in
+              <ArrowRight />
+            </>
+          )}
+        </Button>
       </form>
-    </main>
+      <p className='mt-7 text-center text-sm text-muted-foreground'>
+        New to JobFolio?{' '}
+        <Link
+          className='font-semibold text-primary hover:underline'
+          to='/register'
+        >
+          Create an account
+        </Link>
+      </p>
+    </AuthLayout>
   );
 };
 export default LoginPage;
