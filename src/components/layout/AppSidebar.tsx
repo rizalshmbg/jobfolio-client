@@ -128,6 +128,7 @@ const AppSidebar = ({ username, isLoggingOut, onLogout }: AppSidebarProps) => {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
+              render={<button type='button' disabled={isLoggingOut} />}
               onClick={onLogout}
               disabled={isLoggingOut}
               tooltip='Log out'
