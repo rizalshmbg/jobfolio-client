@@ -14,7 +14,11 @@ import {
   Trash2,
   Wallet,
 } from 'lucide-react';
-import { getApplicationById, deleteApplication } from '@api/application.api';
+import {
+  getApplicationById,
+  deleteApplication,
+  getApplicationActivities,
+} from '@api/application.api';
 import { formatDate } from '@utils/format-date';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
@@ -27,12 +31,15 @@ import {
 } from '@/components/workspace';
 import { readable } from '@utils/format-label';
 import { Button } from '@/components/ui/button';
+import { ApplicationActivityTimeline } from '@/components/application/ApplicationActivityTimeline';
 
 export default function ApplicationDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
   const deleteDialog = useRef<HTMLDialogElement>(null);
+
   const deleteMutation = useMutation({
     mutationFn: () => deleteApplication(id!),
     onSuccess: async () => {
@@ -61,6 +68,13 @@ export default function ApplicationDetailPage() {
       Boolean(id) && !deleteMutation.isPending && !deleteMutation.isSuccess,
   });
 
+  const applicationActivitiesQuery = useQuery({
+    queryKey: queryKeys.applications.activities(id!),
+    queryFn: () => getApplicationActivities(id!),
+    enabled:
+      Boolean(id) && !deleteMutation.isPending && !deleteMutation.isSuccess,
+  });
+
   if (!id) return <ErrorState message='This application link is invalid.' />;
   if (applicationQuery.isPending) return <PageSkeleton />;
   if (applicationQuery.isError)
@@ -80,6 +94,7 @@ export default function ApplicationDetailPage() {
     application.jobUrl && /^https?:\/\//i.test(application.jobUrl)
       ? application.jobUrl
       : null;
+
   const properties = [
     {
       label: 'Location',
@@ -179,6 +194,12 @@ export default function ApplicationDetailPage() {
                 'A little space for interview notes, recruiter details, and anything else worth remembering. Add a note by editing this application.'}
             </p>
           </section>
+          <ApplicationActivityTimeline
+            activities={applicationActivitiesQuery.data ?? []}
+            isLoading={applicationActivitiesQuery.isPending}
+            isError={applicationActivitiesQuery.isError}
+            onRetry={() => void applicationActivitiesQuery.refetch()}
+          />
         </div>
         <aside className='space-y-6'>
           <section className='panel'>
@@ -203,14 +224,14 @@ export default function ApplicationDetailPage() {
                   <CalendarDays size={14} />
                   Added to your tracker
                 </dt>
-                <dd>{formatDate(application.createdAt)}</dd>
+                <dd>{formatDate(application.createdAt, true)}</dd>
               </div>
               <div>
                 <dt>
                   <Clock3 size={14} />
                   Last updated
                 </dt>
-                <dd>{formatDate(application.updatedAt)}</dd>
+                <dd>{formatDate(application.updatedAt, true)}</dd>
               </div>
             </dl>
           </section>
