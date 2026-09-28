@@ -6,6 +6,8 @@ import type {
   CreateApplicationInput,
   UpdateApplicationInput,
   DeleteApplicationResponse,
+  ApplicationActivity,
+  ApplicationActivitiesResponse,
 } from '../types/application';
 
 export const getApplications = async (
@@ -59,4 +61,14 @@ export const deleteApplication = async (
   );
 
   return response.data;
+};
+
+export const getApplicationActivities = async (
+  applicationId: string,
+): Promise<ApplicationActivity[]> => {
+  const response = await api.get<ApplicationActivitiesResponse>(
+    `/applications/${applicationId}/activities`,
+  );
+
+  return response.data.data;
 };
