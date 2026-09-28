@@ -28,6 +28,8 @@ export type ApplicationSortBy =
 
 export type SortOrder = 'asc' | 'desc';
 
+export type ActivityType = 'CREATED' | 'STATUS_CHANGED';
+
 export type Application = {
   id: string;
   company: string;
@@ -108,4 +110,19 @@ export type UpdateApplicationInput = {
 export type DeleteApplicationResponse = {
   success: boolean;
   message: string;
-}
+};
+
+export type ApplicationActivity = {
+  id: string;
+  applicationId: string;
+  type: ActivityType;
+  fromStatus: ApplicationStatus | null;
+  toStatus: ApplicationStatus | null;
+  createdAt: string;
+};
+
+export type ApplicationActivitiesResponse = {
+  success: boolean;
+  message: string;
+  data: ApplicationActivity[];
+};
