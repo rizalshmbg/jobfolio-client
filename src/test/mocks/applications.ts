@@ -1,7 +1,12 @@
 import { http, HttpResponse } from 'msw';
 import { vi } from 'vitest';
 
-import type { Application, ApplicationDetailResponse } from '@/types/application';
+import type {
+  Application,
+  ApplicationActivitiesResponse,
+  ApplicationActivity,
+  ApplicationDetailResponse,
+} from '@/types/application';
 import { server } from './server';
 
 export const applicationsUrl = `${import.meta.env.VITE_API_URL}/applications`;
@@ -23,6 +28,7 @@ export const application: Application = {
   userId: 'user-1',
 };
 export const applicationUrl = `${applicationsUrl}/${application.id}`;
+export const applicationActivitiesUrl = `${applicationUrl}/activities`;
 export const emptyOptionalFields = {
   appliedAt: null,
   jobUrl: null,
@@ -41,5 +47,16 @@ export function detailResponse(overrides: Partial<Application> = {}): Applicatio
 export function mockApplicationDetails(overrides: Partial<Application> = {}) {
   const request = vi.fn(() => HttpResponse.json(detailResponse(overrides)));
   server.use(http.get(applicationUrl, request));
+  return request;
+}
+
+export function mockApplicationActivities(activities: ApplicationActivity[] = []) {
+  const response: ApplicationActivitiesResponse = {
+    success: true,
+    message: 'Application activities retrieved',
+    data: activities,
+  };
+  const request = vi.fn(() => HttpResponse.json(response));
+  server.use(http.get(applicationActivitiesUrl, request));
   return request;
 }
