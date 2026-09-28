@@ -5,13 +5,22 @@ import { Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 
 import ApplicationDetailPage from '@pages/ApplicationDetailPage';
-import { application, applicationUrl, detailResponse, emptyOptionalFields, mockApplicationDetails } from '@/test/mocks/applications';
+import { formatDate } from '@utils/format-date';
+import {
+  application,
+  applicationUrl,
+  detailResponse,
+  emptyOptionalFields,
+  mockApplicationActivities,
+  mockApplicationDetails,
+} from '@/test/mocks/applications';
 import { server } from '@/test/mocks/server';
 import { deferredResponse } from '@/test/utils/application-tests';
 import { renderWithProviders } from '@/test/utils/render-with-providers';
 
 function renderDetail(withId = true) {
   const user = userEvent.setup();
+  mockApplicationActivities();
   renderWithProviders(
     <Routes>
       <Route path={withId ? '/applications/:id' : '/invalid'} element={<ApplicationDetailPage />} />
@@ -42,7 +51,15 @@ describe('ApplicationDetailPage', () => {
     }
 
     expect(screen.getByText(application.company)).toBeVisible();
-    for (const text of ['Jakarta', 'Full Time', 'Remote', '20/09/2026', '19/09/2026', '21/09/2026', application.notes!]) {
+    for (const text of [
+      'Jakarta',
+      'Full Time',
+      'Remote',
+      '20/09/2026',
+      formatDate(application.createdAt, true),
+      formatDate(application.updatedAt, true),
+      application.notes!,
+    ]) {
       expect(screen.getByText(text)).toBeVisible();
     }
     expect(screen.getAllByText('Interview')).toHaveLength(2);
