@@ -7,5 +7,6 @@ export const queryKeys = {
     all: ['applications'] as const,
     list: (params: ApplicationListParams) => ['applications', params] as const,
     detail: (id: string) => ['application', id] as const,
+    activities: (id: string) => ['application', id, 'activities'] as const,
   },
 };
