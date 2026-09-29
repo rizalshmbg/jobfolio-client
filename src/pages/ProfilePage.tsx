@@ -1,18 +1,28 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { getProfile, updateProfile } from '@api/profile.api';
+import { getProfile, updateProfile, changePassword } from '@api/profile.api';
 import {
   profileFormSchema,
   type ProfileFormInput,
+  changePasswordFormSchema,
+  type ChangePasswordFormInput,
 } from '@validations/profile.validations';
 import { useAuthStore } from '@stores/auth.store';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
-import { CalendarDays, LoaderCircle, Save, UserRound } from 'lucide-react';
+import {
+  CalendarDays,
+  Eye,
+  EyeOff,
+  LoaderCircle,
+  Save,
+  UserRound,
+  UserRoundKey,
+} from 'lucide-react';
 import {
   ErrorState,
   Field,
@@ -27,6 +37,10 @@ const ProfilePage = () => {
   const queryClient = useQueryClient();
 
   const updateUser = useAuthStore((state) => state.updateUser);
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const profileQuery = useQuery({
     queryKey: queryKeys.profile,
@@ -49,6 +63,16 @@ const ProfilePage = () => {
     },
   });
 
+  const changePasswordMutation = useMutation({
+    mutationFn: changePassword,
+    onSuccess: () => {
+      toast.success('Password changed successfully.');
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, 'Failed to change password.'));
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -61,8 +85,30 @@ const ProfilePage = () => {
     },
   });
 
+  const {
+    register: registerChangePassword,
+    handleSubmit: handleSubmitChangePassword,
+    reset: resetPassword,
+    formState: { errors: errorsChangePassword },
+  } = useForm<ChangePasswordFormInput>({
+    resolver: zodResolver(changePasswordFormSchema),
+    defaultValues: {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+  });
+
   const onSubmit = (data: ProfileFormInput) => {
     updateMutation.mutate(data);
+  };
+
+  const onPasswordSubmit = (data: ChangePasswordFormInput) => {
+    changePasswordMutation.mutate(data, {
+      onSuccess: () => {
+        resetPassword();
+      },
+    });
   };
 
   useEffect(() => {
@@ -118,6 +164,7 @@ const ProfilePage = () => {
             </p>
           </div>
         </section>
+
         <section className='panel'>
           <div className='form-section-heading'>
             <span className='section-icon'>
@@ -156,6 +203,147 @@ const ProfilePage = () => {
                   <Save size={16} />
                 )}
                 {updateMutation.isPending ? 'Saving...' : 'Save changes'}
+              </Button>
+            </div>
+          </form>
+        </section>
+
+        <section />
+
+        <section className='panel'>
+          <div className='form-section-heading'>
+            <span className='section-icon'>
+              <UserRoundKey size={19} />
+            </span>
+            <div>
+              <h2>Change password</h2>
+              <p>Update your password to keep your account secure.</p>
+            </div>
+          </div>
+          <form
+            onSubmit={handleSubmitChangePassword(onPasswordSubmit)}
+            className='space-y-6 p-6'
+            noValidate
+          >
+            <Field
+              id='currentPassword'
+              label='Current password'
+              error={errorsChangePassword.currentPassword?.message}
+            >
+              <div className='relative'>
+                <Input
+                  id='currentPassword'
+                  type={showCurrentPassword ? 'text' : 'password'}
+                  autoComplete='current-password'
+                  aria-invalid={!!errorsChangePassword.currentPassword}
+                  aria-describedby={
+                    errorsChangePassword.currentPassword
+                      ? 'currentPassword-error'
+                      : undefined
+                  }
+                  {...registerChangePassword('currentPassword')}
+                />
+
+                <button
+                  type='button'
+                  onClick={() => setShowCurrentPassword((value) => !value)}
+                  className='absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-primary'
+                  aria-label={
+                    showCurrentPassword
+                      ? 'Hide current password'
+                      : 'Show current password'
+                  }
+                >
+                  {showCurrentPassword ? (
+                    <EyeOff size={16} />
+                  ) : (
+                    <Eye size={16} />
+                  )}
+                </button>
+              </div>
+            </Field>
+            <Field
+              id='newPassword'
+              label='New password'
+              error={errorsChangePassword.newPassword?.message}
+            >
+              <div className='relative'>
+                <Input
+                  id='newPassword'
+                  type={showNewPassword ? 'text' : 'password'}
+                  autoComplete='new-password'
+                  aria-invalid={!!errorsChangePassword.newPassword}
+                  aria-describedby={
+                    errorsChangePassword.newPassword
+                      ? 'newPassword-error'
+                      : undefined
+                  }
+                  {...registerChangePassword('newPassword')}
+                />
+
+                <button
+                  type='button'
+                  onClick={() => setShowNewPassword((value) => !value)}
+                  className='absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-primary'
+                  aria-label={
+                    showNewPassword ? 'Hide new password' : 'Show new password'
+                  }
+                >
+                  {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </Field>
+            <Field
+              id='confirmPassword'
+              label='Confirm new password'
+              error={errorsChangePassword.confirmPassword?.message}
+            >
+              <div className='relative'>
+                <Input
+                  id='confirmPassword'
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  autoComplete='new-password'
+                  aria-invalid={!!errorsChangePassword.confirmPassword}
+                  aria-describedby={
+                    errorsChangePassword.confirmPassword
+                      ? 'confirmPassword-error'
+                      : undefined
+                  }
+                  {...registerChangePassword('confirmPassword')}
+                />
+
+                <button
+                  type='button'
+                  onClick={() => setShowConfirmPassword((value) => !value)}
+                  className='absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-primary'
+                  aria-label={
+                    showConfirmPassword
+                      ? 'Hide confirm new password'
+                      : 'Show confirm new password'
+                  }
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={16} />
+                  ) : (
+                    <Eye size={16} />
+                  )}
+                </button>
+              </div>
+            </Field>
+            <div className='flex justify-end border-t pt-5'>
+              <Button
+                variant='default'
+                type='submit'
+                disabled={changePasswordMutation.isPending}
+              >
+                {changePasswordMutation.isPending ? (
+                  <LoaderCircle className='animate-spin' />
+                ) : (
+                  <Save size={16} />
+                )}
+                {changePasswordMutation.isPending
+                  ? 'Changing...'
+                  : 'Change password'}
               </Button>
             </div>
           </form>
