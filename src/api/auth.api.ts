@@ -12,13 +12,17 @@ import type {
 export const register = async (
   data: RegisterInput,
 ): Promise<RegisterResponse> => {
-  const response = await api.post<RegisterResponse>('/auth/register', data);
+  const response = await api.post<RegisterResponse>('/auth/register', data, {
+    skipAuthRefresh: true,
+  });
 
   return response.data;
 };
 
 export const login = async (data: LoginInput): Promise<LoginResponse> => {
-  const response = await api.post<LoginResponse>('/auth/login', data);
+  const response = await api.post<LoginResponse>('/auth/login', data, {
+    skipAuthRefresh: true,
+  });
 
   return response.data;
 };
