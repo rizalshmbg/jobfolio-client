@@ -13,5 +13,16 @@ export type ProfileResponse = {
 };
 
 export type UpdateProfileInput = {
-  name?:string;
+  name?: string;
+};
+
+export type ChangePasswordResponse = {
+  success: boolean;
+  message: string;
 }
+
+export type ChangePasswordInput = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
