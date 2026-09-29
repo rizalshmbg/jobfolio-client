@@ -14,6 +14,7 @@ import {
 } from '@validations/auth.validations';
 import { register as registerUser } from '@api/auth.api';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
+import { toast } from 'sonner';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const RegisterPage = () => {
       navigate('/login', { replace: true });
     },
     onError: (error) => {
-      console.log(error);
+      toast.error(getApiErrorMessage(error, 'Failed to register user.'));
     },
   });
 
