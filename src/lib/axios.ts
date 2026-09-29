@@ -7,6 +7,7 @@ import { useAuthStore } from '@stores/auth.store';
 
 type RetryRequestConfig = InternalAxiosRequestConfig & {
   _retry?: boolean;
+  skipAuthRefresh?: boolean;
 };
 
 export const setupAxiosInterceptors = () => {
@@ -31,7 +32,8 @@ export const setupAxiosInterceptors = () => {
       if (
         error.response?.status !== 401 ||
         !originalRequest ||
-        originalRequest._retry
+        originalRequest._retry ||
+        originalRequest.skipAuthRefresh
       ) {
         return Promise.reject(error);
       }
