@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router';
-import { ArrowRight, LoaderCircle } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, LoaderCircle } from 'lucide-react';
 import AuthLayout from '@layouts/AuthLayout';
 import { Field } from '@/components/workspace';
 import { Input } from '@/components/ui/input';
@@ -18,6 +19,8 @@ import { toast } from 'sonner';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const {
     register,
@@ -75,17 +78,28 @@ const RegisterPage = () => {
           />
         </Field>
         <Field id='password' label='Password' error={errors.password?.message}>
-          <Input
-            id='password'
-            type='password'
-            autoComplete='new-password'
-            placeholder='Create a password'
-            aria-invalid={!!errors.password}
-            aria-describedby={
-              errors.password ? 'password-error' : 'password-hint'
-            }
-            {...register('password')}
-          />
+          <div className='relative'>
+            <Input
+              id='password'
+              type={showPassword ? 'text' : 'password'}
+              autoComplete='new-password'
+              placeholder='Create a password'
+              aria-invalid={!!errors.password}
+              aria-describedby={
+                errors.password ? 'password-error' : 'password-hint'
+              }
+              {...register('password')}
+            />
+
+            <button
+              type='button'
+              onClick={() => setShowPassword((value) => !value)}
+              className='absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-primary'
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
           <p id='password-hint' className='text-xs text-muted-foreground'>
             Use at least 8 characters.
           </p>
