@@ -17,6 +17,7 @@ export default defineConfig({
       '@pages': path.resolve(import.meta.dirname, './src/pages'),
       '@routes': path.resolve(import.meta.dirname, './src/routes'),
       '@stores': path.resolve(import.meta.dirname, './src/stores'),
+      '@styles': path.resolve(import.meta.dirname, './src/styles'),
       '@/types': path.resolve(import.meta.dirname, './src/types'),
       '@utils': path.resolve(import.meta.dirname, './src/utils'),
       '@validations': path.resolve(import.meta.dirname, './src/validations'),
