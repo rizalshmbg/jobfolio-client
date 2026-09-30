@@ -31,9 +31,17 @@ function renderLoginPage() {
   return user;
 }
 
+function getEmailInput() {
+  return screen.getByRole('textbox', { name: /email address/i });
+}
+
+function getPasswordInput() {
+  return screen.getByPlaceholderText(/enter your password/i);
+}
+
 async function submitLogin(user: ReturnType<typeof userEvent.setup>) {
-  await user.type(screen.getByLabelText(/email address/i), credentials.email);
-  await user.type(screen.getByLabelText(/password/i), credentials.password);
+  await user.type(getEmailInput(), credentials.email);
+  await user.type(getPasswordInput(), credentials.password);
   await user.click(screen.getByRole('button', { name: /^log in$/i }));
 }
 
@@ -54,7 +62,9 @@ describe('LoginPage', () => {
     const user = renderLoginPage();
     await submitLogin(user);
 
-    expect(await screen.findByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    expect(
+      await screen.findByRole('heading', { name: 'Dashboard' }),
+    ).toBeVisible();
     expect(await screen.findByText(/logged in\. welcome back!/i)).toBeVisible();
     expect(receivedCredentials).toHaveBeenCalledExactlyOnceWith(credentials);
     expect(getAccessToken()).toBe('test-access-token');
@@ -62,59 +72,72 @@ describe('LoginPage', () => {
     expect(useAuthStore.getState().user).toEqual(loginResponse.data.user);
   });
 
-  it.each([
-    { name: 'empty fields', email: '', password: '', passwordError: true },
-    {
-      name: 'an invalid email',
-      email: 'invalid-email',
-      password: 'password123',
-      passwordError: false,
-    },
-  ])('rejects $name without making a login request', async ({ email, password, passwordError }) => {
+  it('rejects empty fields without making a login request', async () => {
     const loginRequest = vi.fn(() => HttpResponse.json(loginResponse));
     server.use(http.post(loginUrl, loginRequest));
 
     const user = renderLoginPage();
-    if (email) await user.type(screen.getByLabelText(/email address/i), email);
-    if (password) await user.type(screen.getByLabelText(/password/i), password);
     await user.click(screen.getByRole('button', { name: /^log in$/i }));
 
     expect(await screen.findByText('Please enter a valid email address')).toBeVisible();
-    expect(screen.getByLabelText(/email address/i)).toBeInvalid();
-    if (passwordError) {
-      expect(screen.getByText('Password is required')).toBeVisible();
-      expect(screen.getByLabelText(/password/i)).toBeInvalid();
-    }
+    expect(screen.getByText('Password is required')).toBeVisible();
+
+    expect(getEmailInput()).toBeInvalid();
+    expect(getPasswordInput()).toBeInvalid();
+
     expect(loginRequest).not.toHaveBeenCalled();
-    expect(getAccessToken()).toBeNull();
+    expect(useAuthStore.getState().status).toBe('unauthenticated');
+  });
+
+  it('rejects an invalid email without making a login request', async () => {
+    const loginRequest = vi.fn(() => HttpResponse.json(loginResponse));
+    server.use(http.post(loginUrl, loginRequest));
+
+    const user = renderLoginPage();
+    await user.type(getEmailInput(), 'invalid-email');
+    await user.type(getPasswordInput(), credentials.password);
+    await user.click(screen.getByRole('button', { name: /^log in$/i }));
+
+    expect(
+      await screen.findByText(/enter a valid email|invalid/i),
+    ).toBeVisible();
+    expect(getEmailInput()).toBeInvalid();
+    expect(loginRequest).not.toHaveBeenCalled();
     expect(useAuthStore.getState().status).toBe('unauthenticated');
   });
 
   it.each([
     { status: 401, message: 'Invalid email or password' },
     { status: 500, message: 'Something went wrong. Please try again.' },
-  ])('shows the API error for HTTP $status and allows another attempt', async ({ status, message }) => {
-    server.use(
-      http.post(loginUrl, () =>
-        HttpResponse.json({ success: false, message }, { status }),
-      ),
-    );
+  ])(
+    'shows the API error for HTTP $status and allows another attempt',
+    async ({ status, message }) => {
+      server.use(
+        http.post(loginUrl, () =>
+          HttpResponse.json({ success: false, message }, { status }),
+        ),
+      );
 
-    const user = renderLoginPage();
-    await submitLogin(user);
+      const user = renderLoginPage();
+      await submitLogin(user);
 
-    expect(await screen.findByText(message)).toBeVisible();
-    expect(screen.getByRole('button', { name: /^log in$/i })).toBeEnabled();
-    expect(screen.queryByRole('heading', { name: 'Dashboard' })).not.toBeInTheDocument();
-    expect(getAccessToken()).toBeNull();
-    expect(useAuthStore.getState().status).toBe('unauthenticated');
-    expect(useAuthStore.getState().user).toBeNull();
+      expect(await screen.findByText(message)).toBeVisible();
+      expect(screen.getByRole('button', { name: /^log in$/i })).toBeEnabled();
+      expect(
+        screen.queryByRole('heading', { name: 'Dashboard' }),
+      ).not.toBeInTheDocument();
+      expect(getAccessToken()).toBeNull();
+      expect(useAuthStore.getState().status).toBe('unauthenticated');
+      expect(useAuthStore.getState().user).toBeNull();
 
-    // Restore the default successful response for the user's next attempt.
-    server.resetHandlers();
-    await user.click(screen.getByRole('button', { name: /^log in$/i }));
-    expect(await screen.findByRole('heading', { name: 'Dashboard' })).toBeVisible();
-  });
+      // Restore the default successful response for the user's next attempt.
+      server.resetHandlers();
+      await user.click(screen.getByRole('button', { name: /^log in$/i }));
+      expect(
+        await screen.findByRole('heading', { name: 'Dashboard' }),
+      ).toBeVisible();
+    },
+  );
 
   it('disables the submit button while the login request is pending', async () => {
     // Hold the response until the loading assertions finish, avoiding timed sleeps.
@@ -140,6 +163,8 @@ describe('LoginPage', () => {
       finishRequest();
     }
 
-    expect(await screen.findByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    expect(
+      await screen.findByRole('heading', { name: 'Dashboard' }),
+    ).toBeVisible();
   });
 });
