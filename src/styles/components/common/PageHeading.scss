@@ -1,0 +1,53 @@
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 1.65px;
+  font-weight: 650;
+  line-height: 1.6;
+}
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.page-heading h1 {
+  font-size: clamp(25px, 2.5vw, 31px);
+  font-weight: 620;
+  letter-spacing: -1px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.page-heading .eyebrow {
+  color: #8c849d;
+}
+@media (max-width: 1023px) {
+  .page-heading {
+    align-items: flex-start;
+  }
+  .page-heading > div:last-child:not(:first-child) {
+    margin-top: 3px;
+  }
+  .page-heading h1 {
+    font-size: 26px;
+  }
+  .page-heading .action-link {
+    padding-inline: 12px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 767px) {
+  .page-heading {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .page-heading > div:last-child:not(:first-child) {
+    margin-top: 0;
+  }
+  .page-heading h1 {
+    font-size: 29px;
+  }
+  .page-heading p {
+    line-height: 1.7;
+  }
+}

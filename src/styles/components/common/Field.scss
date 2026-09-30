@@ -1,0 +1,16 @@
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+.form-field label {
+  color: #655a74;
+  font-size: 12px;
+  font-weight: 550;
+}
+.field-error {
+  color: #c55365;
+  font-size: 11px;
+  line-height: 1.6;
+}

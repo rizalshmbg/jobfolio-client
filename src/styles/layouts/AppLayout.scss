@@ -1,0 +1,27 @@
+.workspace-main {
+  width: 100%;
+  max-width: 1520px;
+  flex: 1;
+  margin-inline: auto;
+  padding: 36px 36px 28px;
+}
+@media (min-width: 1600px) {
+  .workspace-main {
+    padding-top: 46px;
+  }
+}
+@media (max-width: 1200px) {
+  .workspace-main {
+    padding: 28px 24px;
+  }
+}
+@media (max-width: 767px) {
+  .workspace-main {
+    padding: 27px 20px;
+  }
+}
+@media (max-width: 480px) {
+  .workspace-main {
+    padding: 24px 16px;
+  }
+}

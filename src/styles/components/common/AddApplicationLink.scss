@@ -1,0 +1,29 @@
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 11px 17px;
+  background: var(--primary);
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.4;
+  box-shadow: 0 3px 6px #7560ce12;
+}
+.action-link:hover {
+  background: #6651bb;
+  box-shadow: 0 4px 12px #7560ce24;
+}
+.action-link-secondary {
+  background: #fff;
+  color: var(--foreground);
+  border-color: var(--border);
+  box-shadow: 0 2px 3px #29203403;
+}
+.action-link-secondary:hover {
+  background: #f6f4fc;
+}

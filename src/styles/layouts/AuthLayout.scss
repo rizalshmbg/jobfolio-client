@@ -1,0 +1,124 @@
+.auth-layout {
+  display: grid;
+  min-height: 100svh;
+  grid-template-columns: 1fr 1fr;
+}
+.auth-story {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 42px 55px 35px;
+  background: #7560ce;
+  color: #fff;
+}
+.auth-story::after {
+  content: "";
+  position: absolute;
+  right: -100px;
+  bottom: -450px;
+  width: 640px;
+  height: 640px;
+  border: 1px solid #ffffff12;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 80px #ffffff03,
+    0 0 0 160px #ffffff03;
+  pointer-events: none;
+}
+.auth-story .brand-name {
+  color: #fff;
+}
+.auth-story .brand-name > span {
+  color: #d7c8f1;
+}
+.auth-story .brand-mark {
+  background: #ffffff24;
+}
+.auth-story-content {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin-block: 65px;
+}
+.auth-story-content > .eyebrow {
+  color: #e0d2f3;
+  font-size: 9px;
+}
+.auth-story h2 {
+  margin-top: 24px;
+  font-size: clamp(36px, 3.7vw, 54px);
+  line-height: 1.18;
+  font-weight: 550;
+  letter-spacing: -1.8px;
+}
+.auth-story h2 > span {
+  color: #d9c9f0;
+}
+.auth-story-content > p {
+  max-width: 350px;
+  margin-top: 22px;
+  color: #e4d9f1;
+  font-size: 14px;
+  line-height: 1.9;
+}
+.auth-opportunity {
+  max-width: 410px;
+  margin-top: 45px;
+  padding: 23px;
+  border: 1px solid #ffffff30;
+  border-radius: 14px;
+  background: #ffffff0b;
+  box-shadow: 0 8px 24px #352c6010;
+}
+.auth-progress {
+  display: flex;
+  gap: 7px;
+  margin-block: 23px 14px;
+}
+.auth-progress span {
+  width: 25%;
+  height: 5px;
+  border-radius: 6px;
+  background: #ffffff30;
+}
+.auth-progress span:nth-child(-n + 3) {
+  background: #dfccec;
+}
+.auth-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 30px;
+}
+.auth-form {
+  width: 100%;
+  max-width: 365px;
+}
+.auth-form h1 {
+  margin-top: 14px;
+  font-size: 33px;
+  letter-spacing: -1.3px;
+  font-weight: 600;
+}
+.auth-form [data-slot="input"] {
+  height: 46px;
+}
+@media (max-width: 1023px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+  }
+  .auth-story {
+    display: none;
+  }
+  .auth-main {
+    padding-block: 40px;
+  }
+}
+@media (max-width: 480px) {
+  .auth-form h1 {
+    font-size: 31px;
+  }
+}

@@ -1,0 +1,50 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-weight: 550;
+  line-height: 1.1;
+  white-space: nowrap;
+  font-size: 11px;
+}
+.status-badge > span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+.status-wishlist {
+  background: #f0eef5;
+  color: #756484;
+}
+.status-applied {
+  background: #efebfb;
+  color: #755ab0;
+}
+.status-screening {
+  background: #eaf2fc;
+  color: #4975a5;
+}
+.status-interview {
+  background: #fcf2de;
+  color: #967021;
+}
+.status-technical_test {
+  background: #f9eaf4;
+  color: #9c5689;
+}
+.status-offer {
+  background: #e8f5ee;
+  color: #3e7d5e;
+}
+.status-rejected {
+  background: #fbecee;
+  color: #a75260;
+}
+.status-withdrawn {
+  background: #f0f0f2;
+  color: #706b78;
+}

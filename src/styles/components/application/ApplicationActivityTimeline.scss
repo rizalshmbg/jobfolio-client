@@ -1,0 +1,19 @@
+.detail-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 5px 24px 27px;
+}
+.detail-timeline dt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #9990a4;
+  font-size: 11px;
+}
+.detail-timeline dd {
+  padding-left: 23px;
+  margin-top: 8px;
+  color: #6b5f7a;
+  font-size: 12px;
+}
