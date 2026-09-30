@@ -1,0 +1,11 @@
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 550;
+}
+.text-link:hover {
+  color: #514091;
+}

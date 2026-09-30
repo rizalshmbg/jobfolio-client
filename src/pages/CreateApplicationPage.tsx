@@ -16,7 +16,8 @@ import {
 } from '@utils/application-form';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
-import { BackLink, PageHeading } from '@/components/workspace';
+import { BackLink } from '@/components/common/BackLink';
+import { PageHeading } from '@/components/common/PageHeading';
 
 const CreateApplicationPage = () => {
   const navigate = useNavigate();

@@ -1,0 +1,22 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.brand-mark {
+  display: grid;
+  width: 34px;
+  height: 36px;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 3px 6px #7560ce1a;
+}
+.brand-name {
+  font-size: 21px;
+  font-weight: 720;
+  letter-spacing: -0.8px;
+  color: var(--foreground);
+}

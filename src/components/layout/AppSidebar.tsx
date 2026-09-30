@@ -7,7 +7,7 @@ import {
   Sprout,
 } from 'lucide-react';
 import { Link, NavLink, useLocation } from 'react-router';
-import Brand from '@/components/Brand';
+import Brand from '@/components/common/Brand';
 
 import {
   Sidebar,

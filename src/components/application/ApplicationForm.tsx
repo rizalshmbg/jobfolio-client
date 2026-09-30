@@ -4,7 +4,7 @@ import type { ApplicationFormInput } from '@validations/application.validations'
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Field } from '@/components/workspace';
+import { Field } from '@/components/common/Field';
 import { readable } from '@utils/format-label';
 
 type ApplicationFormProps = {

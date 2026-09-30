@@ -23,12 +23,10 @@ import {
   UserRound,
   UserRoundKey,
 } from 'lucide-react';
-import {
-  ErrorState,
-  Field,
-  PageHeading,
-  PageSkeleton,
-} from '@/components/workspace';
+import { ErrorState } from '@/components/common/ErrorState';
+import { Field } from '@/components/common/Field';
+import { PageHeading } from '@/components/common/PageHeading';
+import { PageSkeleton } from '@/components/common/PageSkeleton';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { formatDate } from '@utils/format-date';

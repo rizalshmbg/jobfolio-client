@@ -10,7 +10,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import AppSidebar from '@/components/layout/AppSidebar';
 import AppHeader from '@/components/layout/AppHeader';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
-import { PageSkeleton } from '@/components/workspace';
+import { PageSkeleton } from '@/components/common/PageSkeleton';
 
 const AppLayout = () => {
   const navigate = useNavigate();

@@ -4,9 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 
 import './index.css';
-import './workspace.css';
-import './marketing.css';
-import './responsive.css';
+import '@styles/index.scss';
 import App from './App';
 import { queryClient } from '@lib/query-client';
 import { setupAxiosInterceptors } from '@lib/axios';

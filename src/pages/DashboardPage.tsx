@@ -14,16 +14,14 @@ import { queryKeys } from '@lib/query-keys';
 import { formatDate } from '@utils/format-date';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
 import { useAuthStore } from '@stores/auth.store';
-import {
-  AddApplicationLink,
-  CompanyIcon,
-  EmptyState,
-  ErrorState,
-  PageHeading,
-  PageSkeleton,
-  StatusBadge,
-  ViewLink,
-} from '@/components/workspace';
+import { AddApplicationLink } from '@/components/common/AddApplicationLink';
+import { CompanyIcon } from '@/components/common/CompanyIcon';
+import { EmptyState } from '@/components/common/EmptyState';
+import { ErrorState } from '@/components/common/ErrorState';
+import { PageHeading } from '@/components/common/PageHeading';
+import { PageSkeleton } from '@/components/common/PageSkeleton';
+import { StatusBadge } from '@/components/common/StatusBadge';
+import { ViewLink } from '@/components/common/ViewLink';
 
 export default function DashboardPage() {
   const user = useAuthStore((state) => state.user);

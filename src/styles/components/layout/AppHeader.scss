@@ -1,0 +1,16 @@
+.app-header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  background: #ffffffbf;
+}
+@media (max-width: 767px) {
+  .app-header {
+    height: 62px;
+    padding-inline: 20px;
+  }
+}

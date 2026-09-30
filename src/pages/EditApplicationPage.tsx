@@ -19,12 +19,10 @@ import {
 } from '@utils/application-form';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
-import {
-  BackLink,
-  ErrorState,
-  PageHeading,
-  PageSkeleton,
-} from '@/components/workspace';
+import { BackLink } from '@/components/common/BackLink';
+import { ErrorState } from '@/components/common/ErrorState';
+import { PageHeading } from '@/components/common/PageHeading';
+import { PageSkeleton } from '@/components/common/PageSkeleton';
 
 const EditApplicationPage = () => {
   const { id } = useParams<{ id: string }>();

@@ -22,13 +22,11 @@ import {
 import { formatDate } from '@utils/format-date';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
-import {
-  BackLink,
-  CompanyIcon,
-  ErrorState,
-  PageSkeleton,
-  StatusBadge,
-} from '@/components/workspace';
+import { BackLink } from '@/components/common/BackLink';
+import { CompanyIcon } from '@/components/common/CompanyIcon';
+import { ErrorState } from '@/components/common/ErrorState';
+import { PageSkeleton } from '@/components/common/PageSkeleton';
+import { StatusBadge } from '@/components/common/StatusBadge';
 import { readable } from '@utils/format-label';
 import { Button } from '@/components/ui/button';
 import { ApplicationActivityTimeline } from '@/components/application/ApplicationActivityTimeline';

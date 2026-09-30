@@ -12,8 +12,9 @@ import {
   Workflow,
 } from 'lucide-react';
 import { Link } from 'react-router';
-import Brand from '@/components/Brand';
-import { CompanyIcon, StatusBadge } from '@/components/workspace';
+import Brand from '@/components/common/Brand';
+import { CompanyIcon } from '@/components/common/CompanyIcon';
+import { StatusBadge } from '@/components/common/StatusBadge';
 
 const previewApplications = [
   {

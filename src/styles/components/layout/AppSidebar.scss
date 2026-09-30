@@ -1,0 +1,39 @@
+.workspace-sidebar .sidebar-brand {
+  overflow: hidden;
+}
+.group[data-collapsible="icon"] .sidebar-brand .brand-name {
+  display: none;
+}
+.group[data-collapsible="icon"] .sidebar-brand .brand-mark {
+  width: 32px;
+  height: 34px;
+}
+.sidebar-tip {
+  margin-bottom: 8px;
+  padding: 18px 15px;
+  border: 1px solid #e9e3f5;
+  border-radius: 10px;
+  background: #f8f5ff;
+  color: #836bb7;
+}
+.sidebar-tip p {
+  margin-top: 11px;
+  color: #564577;
+  font-size: 12px;
+  font-weight: 650;
+}
+.sidebar-tip > span {
+  display: block;
+  margin-top: 7px;
+  color: #8c819d;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.sidebar-tip a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 15px;
+  font-size: 11px;
+  font-weight: 600;
+}

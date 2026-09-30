@@ -1,5 +1,5 @@
 import { LoaderCircle } from 'lucide-react';
-import Brand from '@/components/Brand';
+import Brand from '@/components/common/Brand';
 
 export default function SessionLoading() {
   return (
