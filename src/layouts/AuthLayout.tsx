@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { ArrowUpRight, Check, Sparkles } from 'lucide-react';
-import Brand from '@/components/Brand';
+import Brand from '@/components/common/Brand';
 
 type AuthLayoutProps = {
   title: string;

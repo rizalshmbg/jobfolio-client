@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router';
 import { ArrowRight, Eye, EyeOff, LoaderCircle } from 'lucide-react';
 import AuthLayout from '@layouts/AuthLayout';
-import { Field } from '@/components/workspace';
+import { Field } from '@/components/common/Field';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 

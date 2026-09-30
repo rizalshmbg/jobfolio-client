@@ -23,15 +23,13 @@ import { formatDate } from '@utils/format-date';
 import { useDebounce } from '@hooks/use-debounce';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
-import {
-  AddApplicationLink,
-  CompanyIcon,
-  EmptyState,
-  ErrorState,
-  PageHeading,
-  PageSkeleton,
-  StatusBadge,
-} from '@/components/workspace';
+import { AddApplicationLink } from '@/components/common/AddApplicationLink';
+import { CompanyIcon } from '@/components/common/CompanyIcon';
+import { EmptyState } from '@/components/common/EmptyState';
+import { ErrorState } from '@/components/common/ErrorState';
+import { PageHeading } from '@/components/common/PageHeading';
+import { PageSkeleton } from '@/components/common/PageSkeleton';
+import { StatusBadge } from '@/components/common/StatusBadge';
 import { readable } from '@utils/format-label';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

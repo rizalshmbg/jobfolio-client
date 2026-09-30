@@ -1,6 +1,6 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router';
-import Brand from '@/components/Brand';
+import Brand from '@/components/common/Brand';
 
 export default function NotFoundPage() {
   return (

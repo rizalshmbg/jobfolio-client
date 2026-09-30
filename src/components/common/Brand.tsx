@@ -1,7 +1,9 @@
 import { Layers2 } from 'lucide-react';
 import { Link } from 'react-router';
 
-export default function Brand({ compact = false }: Readonly<{ compact?: boolean }>) {
+export default function Brand({
+  compact = false,
+}: Readonly<{ compact?: boolean }>) {
   return (
     <Link to='/' className='brand' aria-label='JobFolio home'>
       <span className='brand-mark'>

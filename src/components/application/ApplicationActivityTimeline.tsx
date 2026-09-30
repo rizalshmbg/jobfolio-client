@@ -3,7 +3,7 @@ import { CheckCircle2, CircleDot } from 'lucide-react';
 import type { ApplicationActivity } from '@/types/application';
 import { formatDate } from '@utils/format-date';
 import { readable } from '@utils/format-label';
-import { StatusBadge } from '@/components/workspace';
+import { StatusBadge } from '@/components/common/StatusBadge';
 
 type ApplicationActivityTimelineProps = {
   activities: ApplicationActivity[];

@@ -4,7 +4,7 @@ import LandingPage from '@pages/LandingPage';
 import ProtectedRoute from '@routes/ProtectedRoute';
 import GuestRoute from '@routes/GuestRoute';
 import NotFoundPage from '@pages/NotFoundPage';
-import SessionLoading from '@/components/SessionLoading';
+import SessionLoading from '@/components/common/SessionLoading';
 
 const AppLayout = lazy(() => import('@layouts/AppLayout'));
 const ApplicationDetailPage = lazy(

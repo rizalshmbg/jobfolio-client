@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router';
 import { useAuthInitialization } from '@hooks/use-auth-initialization';
 import { useAuthStore } from '@stores/auth.store';
-import SessionLoading from '@/components/SessionLoading';
+import SessionLoading from '@/components/common/SessionLoading';
 
 const ProtectedRoute = () => {
   useAuthInitialization();
