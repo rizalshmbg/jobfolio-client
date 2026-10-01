@@ -2,6 +2,7 @@ import type { ApplicationListParams } from '@/types/application';
 
 export const queryKeys = {
   profile: ['profile'] as const,
+  resume: ['resume'] as const,
   dashboard: ['dashboard'] as const,
   applications: {
     all: ['applications'] as const,
