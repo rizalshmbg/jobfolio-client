@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import type { DragEvent } from 'react';
 import { FileText, LoaderCircle, Trash2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -24,6 +25,8 @@ const formatFileSize = (fileSize: number) => {
 };
 
 const ResumeSection = () => {
+  const [isDragging, setIsDragging] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const deleteDialog = useRef<HTMLDialogElement>(null);
 
@@ -35,20 +38,13 @@ const ResumeSection = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
+  const handleFileUpload = async (file: File) => {
     const validation = resumeFileSchema.safeParse(file);
 
     if (!validation.success) {
-      toast.error(validation.error.issues[0]?.message);
-      event.target.value = '';
+      toast.error(
+        validation.error.issues[0]?.message ?? 'Invalid resume file.',
+      );
 
       return;
     }
@@ -63,9 +59,56 @@ const ResumeSection = () => {
       );
     } catch (error) {
       toast.error(getApiErrorMessage(error, 'Failed to upload resume.'));
-    } finally {
-      event.target.value = '';
     }
+  };
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    await handleFileUpload(file);
+
+    event.target.value = '';
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    if (isBusy) {
+      return;
+    }
+
+    event.dataTransfer.dropEffect = 'copy';
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    setIsDragging(false);
+  };
+
+  const handleDrop = async (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    setIsDragging(false);
+
+    if (isBusy) {
+      return;
+    }
+
+    const file = event.dataTransfer.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    await handleFileUpload(file);
   };
 
   const handleDelete = async () => {
@@ -160,36 +203,89 @@ const ResumeSection = () => {
           />
 
           {resume ? (
-            <div className='flex flex-col gap-4 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between'>
-              <div className='flex min-w-0 items-center gap-3'>
-                <div className='flex size-10 shrink-0 items-center justify-center rounded-md bg-muted'>
-                  <FileText size={20} />
+            <>
+              <div className='flex flex-col gap-4 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between'>
+                <div className='flex min-w-0 items-center gap-3'>
+                  <div className='flex size-10 shrink-0 items-center justify-center rounded-md bg-muted'>
+                    <FileText size={20} />
+                  </div>
+
+                  <div className='min-w-0'>
+                    <p className='truncate text-sm font-medium'>
+                      {resume.fileName}
+                    </p>
+
+                    <p className='text-xs text-muted-foreground'>
+                      {formatFileSize(resume.fileSize)}
+                    </p>
+                  </div>
                 </div>
 
-                <div className='min-w-0'>
-                  <p className='truncate text-sm font-medium'>
-                    {resume.fileName}
-                  </p>
+                <div className='flex shrink-0 gap-2'>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    onClick={() => window.open(resume.url, '_blank')}
+                    disabled={isBusy}
+                  >
+                    View
+                  </Button>
 
-                  <p className='text-xs text-muted-foreground'>
-                    {formatFileSize(resume.fileSize)}
-                  </p>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    onClick={handleUploadClick}
+                    disabled={isBusy}
+                  >
+                    {isUploading ? (
+                      <LoaderCircle className='animate-spin' />
+                    ) : (
+                      <Upload size={16} />
+                    )}
+                    {isUploading ? 'Uploading...' : 'Replace'}
+                  </Button>
+
+                  <Button
+                    type='button'
+                    variant='destructive'
+                    onClick={() => {
+                      deleteMutation.reset();
+                      deleteDialog.current?.showModal();
+                    }}
+                    disabled={isBusy}
+                  >
+                    <Trash2 size={16} />
+                    Delete
+                  </Button>
                 </div>
               </div>
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={(event) => void handleDrop(event)}
+                className={`mt-4 rounded-lg border border-dashed p-5 text-center transition-colors ${
+                  isDragging ? 'border-primary bg-primary/5' : ''
+                }`}
+              >
+                <Upload
+                  size={24}
+                  className='mx-auto mb-2 text-muted-foreground'
+                />
 
-              <div className='flex shrink-0 gap-2'>
+                <p className='text-sm font-medium'>
+                  {isDragging
+                    ? 'Drop your new resume here'
+                    : 'Replace your resume'}
+                </p>
+
+                <p className='mt-1 text-xs text-muted-foreground'>
+                  Drag & drop a new PDF, DOC, or DOCX file here
+                </p>
+
                 <Button
                   type='button'
                   variant='outline'
-                  onClick={() => window.open(resume.url, '_blank')}
-                  disabled={isBusy}
-                >
-                  View
-                </Button>
-
-                <Button
-                  type='button'
-                  variant='outline'
+                  className='mt-3'
                   onClick={handleUploadClick}
                   disabled={isBusy}
                 >
@@ -198,34 +294,33 @@ const ResumeSection = () => {
                   ) : (
                     <Upload size={16} />
                   )}
-                  {isUploading ? 'Uploading...' : 'Replace'}
-                </Button>
 
-                <Button
-                  type='button'
-                  variant='destructive'
-                  onClick={() => {
-                    deleteMutation.reset();
-                    deleteDialog.current?.showModal();
-                  }}
-                  disabled={isBusy}
-                >
-                  <Trash2 size={16} />
-                  Delete
+                  {isUploading ? 'Uploading...' : 'Choose new resume'}
                 </Button>
               </div>
-            </div>
+            </>
           ) : (
-            <div className='rounded-lg border border-dashed p-6 text-center'>
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={(event) => void handleDrop(event)}
+              className={`rounded-lg border border-dashed p-6 text-center transition-colors ${
+                isDragging ? 'border-primary bg-primary/5' : ''
+              }`}
+            >
               <FileText
                 size={32}
                 className='mx-auto mb-3 text-muted-foreground'
               />
 
-              <h3 className='text-sm font-medium'>No resume uploaded</h3>
+              <h3 className='text-sm font-medium'>
+                {isDragging ? 'Drop your resume here' : 'No resume uploaded'}
+              </h3>
 
               <p className='mt-1 text-xs text-muted-foreground'>
-                Upload a PDF, DOC, or DOCX file up to 5 MB.
+                {isDragging
+                  ? 'Release the file to upload it.'
+                  : 'Drag & drop your resume here, or choose a file below.'}
               </p>
 
               <Button
