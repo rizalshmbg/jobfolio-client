@@ -8,6 +8,8 @@ import type { ApplicationFormInput } from '@validations/application.validations'
 export const applicationFormDefaultValues: ApplicationFormInput = {
   company: '',
   position: '',
+  description: '',
+  requirements: [],
   status: 'APPLIED',
   appliedAt: '',
   jobUrl: '',
@@ -25,6 +27,8 @@ export const applicationToFormValues = (
   return {
     company: application.company,
     position: application.position,
+    description: application.description ?? '',
+    requirements: application.requirements ?? [],
     status: application.status,
     appliedAt: application.appliedAt ? application.appliedAt.slice(0, 10) : '',
     jobUrl: application.jobUrl ?? '',
@@ -46,6 +50,15 @@ export const formToCreateApplication = (
     company: data.company,
     position: data.position,
     status: data.status,
+
+    ...(data.description && {
+      description: data.description,
+    }),
+
+    ...(data.requirements &&
+      data.requirements.length > 0 && {
+        requirements: data.requirements,
+      }),
 
     ...(data.appliedAt && {
       appliedAt: data.appliedAt,
@@ -87,6 +100,11 @@ export const formToUpdateApplication = (
   return {
     company: data.company,
     position: data.position,
+    description: data.description || null,
+    requirements:
+      data.requirements && data.requirements.length > 0
+        ? data.requirements
+        : null,
     status: data.status,
     appliedAt: data.appliedAt || null,
     jobUrl: data.jobUrl || null,
