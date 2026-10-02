@@ -12,6 +12,8 @@ export const applicationFormSchema = z
       .trim()
       .min(1, 'Position is required')
       .max(100, 'Position must be at most 100 characters'),
+    description: z.string().trim().max(2000),
+    requirements: z.array(z.string().trim().min(1)),
     status: z.enum([
       'WISHLIST',
       'APPLIED',
@@ -70,6 +72,4 @@ export const applicationFormSchema = z
     },
   );
 
-export type ApplicationFormInput = z.infer<
-  typeof applicationFormSchema
->;
+export type ApplicationFormInput = z.infer<typeof applicationFormSchema>;
