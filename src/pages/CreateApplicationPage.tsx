@@ -25,6 +25,7 @@ const CreateApplicationPage = () => {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ApplicationFormInput>({
@@ -68,6 +69,7 @@ const CreateApplicationPage = () => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ApplicationForm
           register={register}
+          control={control}
           errors={errors}
           isPending={createMutation.isPending}
           submitLabel='Add application'

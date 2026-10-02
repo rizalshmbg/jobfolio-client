@@ -37,6 +37,7 @@ const EditApplicationPage = () => {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -113,6 +114,7 @@ const EditApplicationPage = () => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <ApplicationForm
           register={register}
+          control={control}
           errors={errors}
           isPending={updateMutation.isPending}
           submitLabel='Save changes'
