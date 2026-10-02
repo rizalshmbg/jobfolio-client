@@ -1,4 +1,4 @@
-﻿import { useRef } from 'react';
+﻿import { useRef, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ import {
   Pencil,
   Trash2,
   Wallet,
+  ListChecks,
 } from 'lucide-react';
 import {
   getApplicationById,
@@ -32,6 +33,8 @@ import { Button } from '@/components/ui/button';
 import { ApplicationActivityTimeline } from '@/components/application/ApplicationActivityTimeline';
 
 export default function ApplicationDetailPage() {
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -94,6 +97,16 @@ export default function ApplicationDetailPage() {
       : null;
 
   const properties = [
+    {
+      label: 'Description',
+      value: application.description || 'Not specified',
+      icon: FileText,
+    },
+    {
+      label: 'Requirements',
+      value: application.requirements?.join(', ') || 'Not specified',
+      icon: ListChecks,
+    },
     {
       label: 'Location',
       value: application.location || 'Not specified',
@@ -158,7 +171,37 @@ export default function ApplicationDetailPage() {
                     <Icon size={14} />
                     {label}
                   </dt>
-                  <dd>{value}</dd>
+
+                  <dd>
+                    {label === 'Description' ? (
+                      <div>
+                        <p
+                          className={
+                            isDescriptionExpanded
+                              ? 'description-text'
+                              : 'description-text description-collapsed'
+                          }
+                        >
+                          {value}
+                        </p>
+
+                        {application.description && (
+                          <button
+                            type='button'
+                            className='read-more-button'
+                            onClick={() =>
+                              setIsDescriptionExpanded((previous) => !previous)
+                            }
+                          >
+                            {isDescriptionExpanded ? 'Show less' : 'Read more'}
+                          </button>
+                        )}
+                      </div>
+                    ) : (
+                      value
+                    )}
+                  </dd>
+
                 </div>
               ))}
             </dl>
