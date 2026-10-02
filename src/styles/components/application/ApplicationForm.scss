@@ -111,6 +111,71 @@
   background: #f0faf5;
   border-color: #d6eddf;
 }
+
+.requirements-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid #ddd7e4;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.requirements-input:focus-within {
+  border-color: #9b8aa8;
+  box-shadow: 0 0 0 3px #9c8bdd25;
+}
+
+.requirements-input > input {
+  flex: 1;
+  min-width: 140px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #5f526f;
+  font-size: 13px;
+}
+
+.requirements-input > input::placeholder {
+  color: #a69daa;
+}
+
+.requirement-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #f1edf4;
+  color: #5f526f;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.requirement-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #8e8296;
+  cursor: pointer;
+}
+
+.requirement-tag-remove:hover {
+  background: #e3dce7;
+  color: #5f526f;
+}
+
 @media (max-width: 480px) {
   .form-grid {
     grid-template-columns: 1fr;

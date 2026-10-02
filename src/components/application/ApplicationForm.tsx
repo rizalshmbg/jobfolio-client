@@ -1,14 +1,27 @@
-﻿import { Link } from 'react-router';
-import { BriefcaseBusiness, FileText, LoaderCircle, Save } from 'lucide-react';
+﻿import { useState } from 'react';
+import { Link } from 'react-router';
+import {
+  BriefcaseBusiness,
+  FileText,
+  LoaderCircle,
+  Save,
+  X,
+} from 'lucide-react';
 import type { ApplicationFormInput } from '@validations/application.validations';
-import type { FieldErrors, UseFormRegister } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Field } from '@/components/common/Field';
+import {
+  useController,
+  type Control,
+  type FieldErrors,
+  type UseFormRegister,
+} from 'react-hook-form';
+import { Input } from '@components/ui/input';
+import { Button } from '@components/ui/button';
+import { Field } from '@components/common/Field';
 import { readable } from '@utils/format-label';
 
 type ApplicationFormProps = {
   register: UseFormRegister<ApplicationFormInput>;
+  control: Control<ApplicationFormInput>;
   errors: FieldErrors<ApplicationFormInput>;
   isPending: boolean;
   submitLabel: string;
@@ -17,6 +30,7 @@ type ApplicationFormProps = {
 
 export default function ApplicationForm({
   register,
+  control,
   errors,
   isPending,
   submitLabel,
@@ -26,6 +40,16 @@ export default function ApplicationForm({
     'aria-invalid': !!errors[name],
     'aria-describedby': errors[name] ? `${name}-error` : undefined,
   });
+
+  const { field: requirementsField, fieldState: requirementsFieldState } =
+    useController({
+      name: 'requirements',
+      control,
+      defaultValue: [],
+    });
+
+  const [requirementInput, setRequirementInput] = useState('');
+
   return (
     <div className='application-form'>
       <section className='panel'>
@@ -58,6 +82,112 @@ export default function ApplicationForm({
               {...validation('position')}
               {...register('position')}
             />
+          </Field>
+          <Field
+            id='description'
+            label='Job description'
+            error={errors.description?.message}
+            optional
+          >
+            <textarea
+              className='textarea-control'
+              id='description'
+              rows={5}
+              placeholder='e.g. A brief description of the role, responsibilities, and requirements.'
+              {...validation('description')}
+              {...register('description')}
+            />
+            <span className='text-xs text-muted-foreground'>
+              Up to 2,000 characters.
+            </span>
+          </Field>
+          <Field
+            id='requirements'
+            label='Requirements'
+            error={
+              requirementsFieldState.error?.message ??
+              errors.requirements?.message
+            }
+            optional
+          >
+            <div
+              className='requirements-input'
+              aria-invalid={!!errors.requirements}
+            >
+              {requirementsField.value.map((requirement, index) => (
+                <span
+                  className='requirement-tag'
+                  key={`${requirement}-${index}`}
+                >
+                  {requirement}
+
+                  <button
+                    type='button'
+                    className='requirement-tag-remove'
+                    aria-label={`Remove ${requirement}`}
+                    onClick={() => {
+                      requirementsField.onChange(
+                        requirementsField.value.filter(
+                          (_, requirementIndex) => requirementIndex !== index,
+                        ),
+                      );
+                    }}
+                  >
+                    <X size={13} />
+                  </button>
+                </span>
+              ))}
+
+              <input
+                id='requirements'
+                type='text'
+                value={requirementInput}
+                placeholder={
+                  requirementsField.value.length === 0
+                    ? 'e.g. React, TypeScript, Figma'
+                    : 'Add a requirement...'
+                }
+                onChange={(event) => {
+                  setRequirementInput(event.target.value);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter') {
+                    return;
+                  }
+
+                  event.preventDefault();
+
+                  const value = requirementInput.trim();
+
+                  if (!value) {
+                    return;
+                  }
+
+                  if (requirementsField.value.includes(value)) {
+                    setRequirementInput('');
+                    return;
+                  }
+
+                  requirementsField.onChange([
+                    ...requirementsField.value,
+                    value,
+                  ]);
+
+                  setRequirementInput('');
+                }}
+                onBlur={() => {
+                  requirementsField.onBlur();
+                }}
+                aria-invalid={!!errors.requirements}
+                aria-describedby={
+                  errors.requirements ? 'requirements-error' : undefined
+                }
+              />
+            </div>
+
+            <span className='text-xs text-muted-foreground'>
+              Press Enter to add a requirement.
+            </span>
           </Field>
           <Field
             id='status'
