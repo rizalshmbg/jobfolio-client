@@ -34,6 +34,8 @@ export type Application = {
   id: string;
   company: string;
   position: string;
+  description: string | null;
+  requirements: string[] | null;
   status: ApplicationStatus;
   appliedAt: string | null;
   jobUrl: string | null;
@@ -82,6 +84,8 @@ export type ApplicationDetailResponse = {
 export type CreateApplicationInput = {
   company: string;
   position: string;
+  description?: string;
+  requirements?: string[];
   status?: ApplicationStatus;
   appliedAt?: string;
   jobUrl?: string;
@@ -96,6 +100,8 @@ export type CreateApplicationInput = {
 export type UpdateApplicationInput = {
   company?: string;
   position?: string;
+  description?: string | null;
+  requirements?: string[] | null;
   status?: ApplicationStatus;
   appliedAt?: string | null;
   jobUrl?: string | null;
