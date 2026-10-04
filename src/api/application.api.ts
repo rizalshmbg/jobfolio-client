@@ -46,7 +46,7 @@ export const updateApplication = async (
   data: UpdateApplicationInput,
 ): Promise<ApplicationDetailResponse> => {
   const response = await api.patch<ApplicationDetailResponse>(
-    `applications/${id}`,
+    `/applications/${id}`,
     data,
   );
 
