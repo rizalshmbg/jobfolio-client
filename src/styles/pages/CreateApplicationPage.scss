@@ -1,1 +1,23 @@
 // CreateApplicationPage uses the shared application form styles.
+.job-import-form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.job-import-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.job-import-controls [data-slot='input'] {
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .job-import-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
