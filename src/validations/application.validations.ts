@@ -31,7 +31,7 @@ export const applicationFormSchema = z
         (value) => value === '' || z.url().safeParse(value).success,
         'Please enter a valid URL',
       ),
-    location: z.string().max(100),
+    location: z.string().max(200),
     employmentType: z.enum([
       '',
       'FULL_TIME',
