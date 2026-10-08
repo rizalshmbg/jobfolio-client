@@ -157,6 +157,7 @@ export default function ApplicationDetailPage() {
           Edit application
         </Link>
       </div>
+
       <div className='detail-grid'>
         <div className='space-y-6'>
           <section className='panel'>
@@ -223,6 +224,7 @@ export default function ApplicationDetailPage() {
               )}
             </div>
           </section>
+
           <section className='panel'>
             <div className='panel-heading'>
               <h2 className='flex items-center gap-2'>
@@ -235,13 +237,8 @@ export default function ApplicationDetailPage() {
                 'A little space for interview notes, recruiter details, and anything else worth remembering. Add a note by editing this application.'}
             </p>
           </section>
-          <ApplicationActivityTimeline
-            activities={applicationActivitiesQuery.data ?? []}
-            isLoading={applicationActivitiesQuery.isPending}
-            isError={applicationActivitiesQuery.isError}
-            onRetry={() => void applicationActivitiesQuery.refetch()}
-          />
         </div>
+
         <aside className='space-y-6'>
           <section className='panel'>
             <div className='panel-heading'>
@@ -276,6 +273,14 @@ export default function ApplicationDetailPage() {
               </div>
             </dl>
           </section>
+
+          <ApplicationActivityTimeline
+            activities={applicationActivitiesQuery.data ?? []}
+            isLoading={applicationActivitiesQuery.isPending}
+            isError={applicationActivitiesQuery.isError}
+            onRetry={() => void applicationActivitiesQuery.refetch()}
+          />
+
           <section className='rounded-xl border border-dashed border-border p-5'>
             <h2 className='text-xs font-medium'>Keep your tracker relevant</h2>
             <p className='mt-2 mb-4 text-xs leading-6 text-muted-foreground'>
@@ -295,6 +300,7 @@ export default function ApplicationDetailPage() {
           </section>
         </aside>
       </div>
+
       <dialog
         ref={deleteDialog}
         className='delete-dialog'
