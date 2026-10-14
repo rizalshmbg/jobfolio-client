@@ -20,20 +20,24 @@ import {
   deleteApplication,
   getApplicationActivities,
 } from '@api/application.api';
+import { matchApplication } from '@api/job-matching.api';
 import { formatDate } from '@utils/format-date';
 import { queryKeys } from '@lib/query-keys';
 import { getApiErrorMessage } from '@utils/get-api-error.message';
-import { BackLink } from '@/components/common/BackLink';
-import { CompanyIcon } from '@/components/common/CompanyIcon';
-import { ErrorState } from '@/components/common/ErrorState';
-import { PageSkeleton } from '@/components/common/PageSkeleton';
-import { StatusBadge } from '@/components/common/StatusBadge';
+import { BackLink } from '@components/common/BackLink';
+import { CompanyIcon } from '@components/common/CompanyIcon';
+import { ErrorState } from '@components/common/ErrorState';
+import { PageSkeleton } from '@components/common/PageSkeleton';
+import { StatusBadge } from '@components/common/StatusBadge';
 import { readable } from '@utils/format-label';
-import { Button } from '@/components/ui/button';
-import { ApplicationActivityTimeline } from '@/components/application/ApplicationActivityTimeline';
+import { Button } from '@components/ui/button';
+import { ApplicationActivityTimeline } from '@components/application/ApplicationActivityTimeline';
+import { ApplicationMatchSection } from '@components/application/ApplicationMatchSection';
 
 export default function ApplicationDetailPage() {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
+  // const applicationMatching = useApplicationMatching();
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -59,6 +63,16 @@ export default function ApplicationDetailPage() {
       // Native modal dialogs cover the global toaster, so close it before feedback.
       deleteDialog.current?.close();
       toast.error(getApiErrorMessage(error, 'Failed to delete application.'));
+    },
+  });
+
+  const matchMutation = useMutation({
+    mutationFn: () => matchApplication(id!),
+    onSuccess: () => {
+      toast.success('Resume matched successfully.');
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, 'Failed to match resume.'));
     },
   });
 
@@ -202,7 +216,6 @@ export default function ApplicationDetailPage() {
                       value
                     )}
                   </dd>
-
                 </div>
               ))}
             </dl>
@@ -237,6 +250,12 @@ export default function ApplicationDetailPage() {
                 'A little space for interview notes, recruiter details, and anything else worth remembering. Add a note by editing this application.'}
             </p>
           </section>
+
+          <ApplicationMatchSection
+            result={matchMutation.data?.data ?? null}
+            isPending={matchMutation.isPending}
+            onMatch={() => matchMutation.mutate()}
+          />
         </div>
 
         <aside className='space-y-6'>
