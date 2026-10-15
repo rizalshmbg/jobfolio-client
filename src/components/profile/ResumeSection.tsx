@@ -178,6 +178,20 @@ const ResumeSection = () => {
 
   const resume = resumeQuery.data;
 
+  const handleViewResume = () => {
+    if (!resume?.url) {
+      toast.error('Resume URL is not available.');
+      return;
+    }
+
+    const newTab = window.open('about:blank', '_blank');
+
+    if (newTab) {
+      newTab.opener = null;
+      newTab.location.href = resume.url;
+    }
+  };
+
   return (
     <>
       <section className='panel'>
@@ -225,7 +239,7 @@ const ResumeSection = () => {
                   <Button
                     type='button'
                     variant='outline'
-                    onClick={() => window.open(resume.url, '_blank')}
+                    onClick={handleViewResume}
                     disabled={isBusy}
                   >
                     View
