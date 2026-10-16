@@ -14,6 +14,8 @@
 .landing-nav nav a:hover {
   color: var(--primary);
 }
+
+/* HERO SECTION */
 .hero {
   position: relative;
   padding: 75px 20px 61px;
@@ -25,7 +27,7 @@
   left: calc(50% - 580px);
   width: 1160px;
   height: 730px;
-  content: "";
+  content: '';
   border-radius: 50%;
   background: radial-gradient(ellipse, #ede6fb66 0%, transparent 66%);
   pointer-events: none;
@@ -41,16 +43,20 @@
   border: 1px solid #e8e0f4;
   border-radius: 30px;
   background: #f6f2fc;
-  color: #8064aa;
-  font-size: 10px;
-  font-weight: 500;
-}
-.hero-badge > span {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #a28cc7;
-  box-shadow: 0 0 0 3px #a28cc711;
+
+  .circle {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #a28cc7;
+    box-shadow: 0 0 0 3px #a28cc711;
+  }
+
+  p {
+    font-size: 10px;
+    font-weight: 500;
+    color: #8064aa;
+  }
 }
 .hero h1 {
   margin: 24px auto 21px;
@@ -91,6 +97,9 @@
   align-items: center;
   gap: 5px;
 }
+/* END OF HERO SECTION */
+
+/* PRODUCT PREVIEW SECTION */
 .product-preview {
   position: relative;
   max-width: 1040px;
@@ -117,6 +126,9 @@
   box-shadow: 0 10px 30px #624b8b13;
   transform: rotate(-3deg);
 }
+/* END OF PRODUCT PREVIEW SECTION */
+
+/* FEATURES SECTION */
 .features-section {
   max-width: 1100px;
   margin: auto;
@@ -175,6 +187,9 @@
   font-size: 12px;
   line-height: 1.95;
 }
+/* END OF FEATURES SECTION */
+
+/* HOW IT WORKS SECTION */
 .how-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -217,6 +232,9 @@
   font-size: 12px;
   line-height: 1.8;
 }
+/* END OF HOW IT WORKS SECTION */
+
+/* LANDING CTA SECTION */
 .landing-cta {
   max-width: 1044px;
   margin: 0 auto 70px;
@@ -241,6 +259,9 @@
   color: #887695;
   font-size: 12px;
 }
+/* END OF LANDING CTA SECTION */
+
+/* LANDING FOOTER SECTION */
 .landing-footer {
   display: flex;
   max-width: 1100px;
@@ -266,6 +287,9 @@
   color: #8c8091;
   font-size: 10px;
 }
+/* END OF LANDING FOOTER SECTION */
+
+/* RESPONSIVE */
 @media (max-width: 1200px) {
   .product-preview,
   .how-section,
@@ -273,9 +297,7 @@
     margin-inline: 45px;
   }
 }
-@media (max-width: 1023px) {
-  
-}
+
 @media (max-width: 767px) {
   .landing-nav {
     padding: 21px 23px;

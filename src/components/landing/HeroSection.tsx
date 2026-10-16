@@ -5,8 +5,8 @@ const HeroSection = () => {
   return (
     <section className='hero'>
       <div className='hero-badge'>
-        <span></span>
-        Your personal job application tracker
+        <span className='circle'></span>
+        <p>Your personal job application tracker</p>
       </div>
       <h1>
         Big ambitions.
