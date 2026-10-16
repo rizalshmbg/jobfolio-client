@@ -1,4 +1,44 @@
-import { BriefcaseBusiness, Target, Workflow } from 'lucide-react';
+import {
+  BriefcaseBusiness,
+  ChartNoAxesCombined,
+  FileCheck,
+  NotebookPen,
+  Search,
+  Workflow,
+} from 'lucide-react';
+
+const features = [
+  {
+    icon: BriefcaseBusiness,
+    title: 'Every application, together',
+    text: 'Keep track of companies, positions, application statuses, job links, and important notes in one organized workspace.',
+  },
+  {
+    icon: Search,
+    title: 'Import job details, faster',
+    text: 'Turn supported job posting URLs into organized application details and spend less time entering information manually.',
+  },
+  {
+    icon: FileCheck,
+    title: 'Make your CV work harder',
+    text: 'Review your CV to discover potential improvements and better understand how it presents your skills and experience.',
+  },
+  {
+    icon: Workflow,
+    title: 'Every stage, in view',
+    text: 'Follow your applications through each recruitment stage, from wishlist and applied to interviews and offers.',
+  },
+  {
+    icon: ChartNoAxesCombined,
+    title: 'Your progress, made clear',
+    text: 'Understand your job search at a glance with application totals and a breakdown of your application statuses.',
+  },
+  {
+    icon: NotebookPen,
+    title: 'Keep your career details ready',
+    text: 'Store your CV in your profile so it is easy to access whenever you need it.',
+  },
+];
 
 const FeaturesSection = () => {
   return (
@@ -17,23 +57,7 @@ const FeaturesSection = () => {
         </p>
       </div>
       <div className='feature-grid'>
-        {[
-          {
-            icon: BriefcaseBusiness,
-            title: 'Every application, together',
-            text: 'Log roles, companies, job links, and notes. Keep all the details of your applications in one place.',
-          },
-          {
-            icon: Workflow,
-            title: 'Every stage, in view',
-            text: 'Track each application through the recruitment pipeline, from wishlist and applied to interview and offer.',
-          },
-          {
-            icon: Target,
-            title: 'Your progress, made clear',
-            text: 'See your application totals and status breakdown at a glance. Understand where your job search stands.',
-          },
-        ].map(({ icon: Icon, title, text }, i) => (
+        {features.map(({ icon: Icon, title, text }, i) => (
           <article key={title} className='feature-card'>
             <span className={`feature-icon feature-icon-${i}`}>
               <Icon size={23} />
