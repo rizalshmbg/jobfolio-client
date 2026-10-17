@@ -11,7 +11,7 @@ const HowItWorksSection = () => {
         <h2>
           From “what if”
           <br />
-          to what’s next.
+          to what's next.
         </h2>
         <Link to='/register' className='text-link mt-6'>
           Find your starting point
